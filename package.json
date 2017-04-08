@@ -5,7 +5,9 @@
   "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-server": "export NODE_ENV=\"development\"; nodemon server/server.js"
+    "dev-server": "export NODE_ENV=\"development\"; nodemon server/server.js",
+    "dev-migrate:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate",
+    "dev-migrate:undo:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate:undo:all"
   },
   "repository": {
     "type": "git",
