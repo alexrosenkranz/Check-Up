@@ -1,0 +1,31 @@
+{
+  "name": "check-up",
+  "version": "1.0.0",
+  "description": "a patient healthcare monitoring app",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexrosenkranz/Check-Up.git"
+  },
+  "author": "Alan Chu, Alex Rosenkranz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexrosenkranz/Check-Up/issues"
+  },
+  "homepage": "https://github.com/alexrosenkranz/Check-Up#readme",
+  "dependencies": {
+    "axios": "^0.16.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.4",
+    "sequelize-cli": "^2.7.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.8.1"
+  }
+}
