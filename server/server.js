@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001
 
 // require models ------------------------- /
 const db = require('./db/models')
-// const apiRouter = require('./controllers/apiRouter')
+const apiRouter = require('./controllers/apiRouter')
 
 // Logger ------------------------- /
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms')) // for logging
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Route config -------------------------------------------/
-// app.use('/api', apiRouter)
+app.use('/api', apiRouter)
 // app.use(errorHandler)
 
 // Express only serves static assets in production
