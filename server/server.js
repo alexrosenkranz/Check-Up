@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001
 
 
 // require models ------------------------- /
-// const db = require('./db/models')
+const db = require('./db/models')
 // const apiRouter = require('./controllers/apiRouter')
 
 // Logger ------------------------- /
