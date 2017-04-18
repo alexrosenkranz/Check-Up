@@ -1,5 +1,5 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
+'use strict'
+module.exports = function (sequelize, DataTypes) {
   var Provider = sequelize.define('Provider', {
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
@@ -7,10 +7,10 @@ module.exports = function(sequelize, DataTypes) {
     phone: DataTypes.INTEGER
   }, {
     classMethods: {
-      associate: function(models) {
+      associate: function (models) {
         // associations can be defined here
       }
     }
-  });
-  return Provider;
-};
+  })
+  return Provider
+}

@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "export NODE_ENV=\"development\"; nodemon server/server.js",
     "dev-migrate:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate",
-    "dev-migrate:undo:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate:undo:all"
+    "dev-migrate:undo:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate:undo:all",
+    "lint:fix": "node_modules/.bin/eslint --fix server/"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,12 @@
   "dependencies": {
     "axios": "^0.16.0",
     "body-parser": "^1.17.1",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "express": "^4.15.2",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.4",
