@@ -68,7 +68,7 @@ describe(title, () => {
 
   it('should be able to add another new patient', (done) => {
     Query.addPatient(patientB).spread((patient, created) => {
-      const patientData = JSON.parse(JSON.stringify(patient)) // hack so you don't have to get .dataValues
+      const patientData = JSON.parse(JSON.stringify(patient))
       try {
         expect(patientData).to.contain.all.keys(
           ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
@@ -87,7 +87,7 @@ describe(title, () => {
 
   it('should not be able to add the same patient again', (done) => {
     Query.addPatient(patientB).spread((patient, created) => {
-      const patientData = JSON.parse(JSON.stringify(patient)) // hack so you don't have to get .dataValues
+      const patientData = JSON.parse(JSON.stringify(patient))
       try {
         expect(patientData).to.contain.all.keys(
           ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
@@ -104,7 +104,42 @@ describe(title, () => {
     })
   })
 
-  // it('should be able to find the first patient we entered', (done) => {
-  //   Query.find
-  // })
+  it('should be able to find all patients entered', (done) => {
+    Query.findAllPatients().then((results) => {
+      const queryData = JSON.parse(JSON.stringify(results))  // sequelize hack yo
+      try {
+        expect(queryData).to.have.lengthOf(2)
+        // test patient A
+        expect(queryData[0]).to.contain.all.keys(
+          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+        )
+        delete queryData[0].id
+        delete queryData[0].updatedAt
+        delete queryData[0].createdAt
+        assert.deepEqual(queryData[0], patientA)
+        // test patient B? unnecessary probs ...
+        done()
+      } catch (e) {
+        done(e)
+      }
+    })
+  })
+
+  it('should be able to find the first patient we entered', (done) => {
+    Query.findPatientById(2).then((result) => {
+      const patientData = JSON.parse(JSON.stringify(result))  // sequelize hack yo
+      try {
+        expect(patientData).to.contain.all.keys(
+          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+        )
+        delete patientData.id
+        delete patientData.updatedAt
+        delete patientData.createdAt
+        assert.deepEqual(patientData, patientB)
+        done()
+      } catch (e) {
+        done(e)
+      }
+    })
+  })
 })
