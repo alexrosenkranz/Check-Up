@@ -1,6 +1,9 @@
 const models = require('../db/models')
 
 module.exports = {
+  /**  ====== PATIENT related Queries ========
+   *
+   */
   findPatientById: (id) => {
     return models.Patient.findOne({
       where: { id }
@@ -8,5 +11,8 @@ module.exports = {
   },
   findAllPatients: () => {
     return models.Patient.findAll()
+  },
+  newPatient: (ptObj) => {
+    return models.Patient.findOrCreate({ where: { email: ptObj.email }, defaults: ptObj })
   }
 }
