@@ -6,4 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.5] - 2017-04-18
 ### Added
-- eslint with standard
+- eslint with standard js style
+- added testing infrastructure
+- cleaned up server.js file
+- added testing database
