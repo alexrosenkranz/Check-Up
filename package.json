@@ -7,8 +7,10 @@
     "dev": "export NODE_ENV=\"development\"; nodemon server/server.js",
     "dev-migrate:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate",
     "dev-migrate:undo:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate:undo:all",
-    "lint:fix": "node_modules/.bin/eslint --fix server/",
-    "test": "export NODE_ENV='testing'; export PORT='1010'; find ./test -name '*.js' | node_modules/.bin/mocha --recursive"
+    "test-migrate:all": "export NODE_ENV=\"testing\"; ./node_modules/.bin/sequelize db:migrate",
+    "test-migrate:undo:all": "export NODE_ENV=\"testing\"; ./node_modules/.bin/sequelize db:migrate:undo:all",
+    "test": "export NODE_ENV='testing'; export PORT='1010'; find ./test -name '*.js' | node_modules/.bin/mocha --recursive",
+    "lint:fix": "node_modules/.bin/eslint --fix server/"
   },
   "repository": {
     "type": "git",
