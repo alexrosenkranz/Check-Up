@@ -5,6 +5,7 @@
 // const expect = require('chai').expect
 // chai.use(dirtyChai)
 
+require('dotenv').load() // if you're not loading the server!
 const models = require('../../server/db/models')
 
 const title =
