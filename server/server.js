@@ -27,7 +27,7 @@ app.use(bodyParser.json())
 app.use('/api/v1', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
-if (process.env.NODE_ENV !== 'testing') {
+if (process.env.NODE_ENV !== 'testing' || process.env.NODE_ENV !== 'travis') {
   db.sequelize.sync().then(() => {
     console.info('Databases are all synced!')
     app.listen(PORT, (err) => {

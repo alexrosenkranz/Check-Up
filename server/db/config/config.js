@@ -16,7 +16,7 @@ module.exports = {
     'host': '127.0.0.1',
     'dialect': 'mysql'
   },
-  'travis-testing': {
+  'travis': {
     'username': 'root',
     'password': null,
     'database': 'checkup_travis_testing_db',
