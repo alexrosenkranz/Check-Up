@@ -10,6 +10,7 @@
     "test-migrate:all": "export NODE_ENV=\"testing\"; ./node_modules/.bin/sequelize db:migrate",
     "test-migrate:undo:all": "export NODE_ENV=\"testing\"; ./node_modules/.bin/sequelize db:migrate:undo:all",
     "test": "export NODE_ENV='testing'; export PORT='1010'; find ./test -name '*.js' | node_modules/.bin/mocha --recursive",
+    "travis-test": "node_modules/.bin/sequelize db:migrate; NODE_ENV=\"travis-testing\"; find ./test -name '*.js' | node_modules/.bin/mocha --recursive",
     "lint:server": "node_modules/.bin/eslint --fix server/",
     "lint:test": "node_modules/.bin/eslint --fix test/"
   },
