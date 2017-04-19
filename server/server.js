@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Route config -------------------------------------------/
-app.use('/api', require('./controllers/apiRouter'))
+app.use('/api/v1', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
 if (process.env.NODE_ENV !== 'testing') {
