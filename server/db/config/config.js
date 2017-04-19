@@ -9,6 +9,7 @@ module.exports = {
     'dialect': 'mysql'
   },
   'testing': {
+    'logging': false,
     'username': process.env.TESTING_USERNAME,
     'password': process.env.TESTING_PASSWORD,
     'database': process.env.TESTING_DATABASE,

@@ -14,3 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.6] - 2017-04-19
 ### Added
 - .env to load local username // password arguments into local database, for easier collaboration
+
+## [0.7] - 2017-04-19
+### Added
+- added npm lint cmd for `test/`
+- added api queries for the patient table
+- added patient unit testing
+### BUGS
+- need to write integration tests for API endpoints
