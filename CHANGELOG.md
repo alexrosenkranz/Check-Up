@@ -10,3 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - added testing infrastructure
 - cleaned up server.js file
 - added testing database
+
+## [0.6] - 2017-04-19
+### Added
+- .env to load local username // password arguments into local database, for easier collaboration

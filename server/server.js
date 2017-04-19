@@ -2,6 +2,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+require('dotenv').load()
 // const path = require('path')
 
 // Create express App ------------------------- /
