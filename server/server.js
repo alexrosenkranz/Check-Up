@@ -36,10 +36,4 @@ if (process.env.NODE_ENV !== 'testing' || process.env.NODE_ENV !== 'travis') {
     })
   }).catch((err) => console.error(err))
 }
-// else {
-//   app.listen(PORT, (err) => {
-//     if (err) console.log(err)
-//     console.info(`Listening on port: ${PORT}`)
-//   })
-// }
 module.exports = app
