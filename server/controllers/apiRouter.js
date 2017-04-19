@@ -23,7 +23,7 @@ router.get('/patient', (req, res) => {
 router.post('/patient', (req, res) => {
   const { email, first_name, last_name } = req.body
   const patientData = { email, first_name, last_name }
-  Query.newPatient(patientData).spread((patient, created) => {
+  Query.addPatient(patientData).spread((patient, created) => {
     if (!created) {
       return res.json({error: true, msg: `Sorry there already is a patient with that email`})
     }

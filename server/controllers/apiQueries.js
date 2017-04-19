@@ -12,7 +12,7 @@ module.exports = {
   findAllPatients: () => {
     return models.Patient.findAll()
   },
-  newPatient: (ptObj) => {
+  addPatient: (ptObj) => {
     return models.Patient.findOrCreate({ where: { email: ptObj.email }, defaults: ptObj })
   }
 }
