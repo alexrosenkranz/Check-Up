@@ -1,3 +1,5 @@
+require('dotenv').load()
+
 module.exports = {
   'development': {
     'username': process.env.DEV_USERNAME,
