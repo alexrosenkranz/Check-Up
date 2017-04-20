@@ -22,3 +22,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - added patient unit testing
 ### BUGS
 - need to write integration tests for API endpoints
+
+## [0.8] - 2017-04-19
+### Added
+- added travis ci integration, for testing all pr
+
+## [0.9] - 2017-04-19
+### Added
+- M:M relationship between patient and providers, with migration.
+- Added bcrypt hashing patient password before saving hook
+- adjusted tests
+### TO DO
+- compare hashed passwords
