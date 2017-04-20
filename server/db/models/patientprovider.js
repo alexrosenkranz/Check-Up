@@ -4,6 +4,11 @@
  */
 module.exports = function (sequelize, DataTypes) {
   var PatientProvider = sequelize.define('PatientProvider', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     Patient_id: DataTypes.INTEGER,
     Provider_id: DataTypes.INTEGER
   }, {
