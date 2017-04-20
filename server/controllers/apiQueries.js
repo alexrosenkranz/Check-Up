@@ -60,6 +60,10 @@ module.exports = {
       })
     })
     // return db.PatientProvider.destroy(data)
+  },
+  // for testing purposes
+  findAllPatientProvider: () => {
+    return db.PatientProvider.findAll()
   }
 
 }
