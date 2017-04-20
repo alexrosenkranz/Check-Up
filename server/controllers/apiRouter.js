@@ -66,9 +66,7 @@ router.post('/new-patient-provider', (req, res) => {
   Query.addPatientProvider(patientId, providerId)
   .spread((result, created) => {
     return res.json({ result, created })
-    // return res.json({ result, created })
   }).catch((error) => {
-    // return res.json({ result: error, created: false, error: true }) // maybe sanitize error msg?? for security?
     return res.json({ result: error, created: false, error: true })
   })
 })
