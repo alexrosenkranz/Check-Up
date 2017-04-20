@@ -49,8 +49,6 @@ module.exports = {
     })
   },
   removePatientProvider: (Patient_id, Provider_id) => {
-    // let data = { Patient_id, Provider_id }
-    // first find row with pateint_id && provider_id
     return db.PatientProvider.findOne({where: { Patient_id, Provider_id }}).then((match) => {
       if (!match) {
         return { error: 'no match found' }
@@ -59,7 +57,6 @@ module.exports = {
         return { success: true }
       })
     })
-    // return db.PatientProvider.destroy(data)
   },
   // for testing purposes
   findAllPatientProvider: () => {
