@@ -61,13 +61,13 @@ router.post('/new-provider', (req, res) => {
  * 1) add new patient provider relationship
  * 2) remove a patient provider relationship
  */
+/**
+ * @return result {object} - has key of result, created. If error, returns a key of error, and erro msg in result.
+ */
 router.post('/new-patient-provider', (req, res) => {
   const { patientId, providerId } = req.body
-  Query.addPatientProvider(patientId, providerId)
-  .spread((result, created) => {
-    return res.json({ result, created })
-  }).catch((error) => {
-    return res.json({ result: error, created: false, error: true })
+  Query.addPatientProvider(patientId, providerId).then((result) => {
+    res.json(result)
   })
 })
 

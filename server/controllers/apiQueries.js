@@ -41,16 +41,12 @@ module.exports = {
    */
   addPatientProvider: (Patient_id, Provider_id) => {
     let data = { Patient_id, Provider_id }
-    console.log(data)
     return db.PatientProvider.findOrCreate({ where: data, defaults: data })
-    // db.PatientProvider.findOrCreate({ where: data, defaults: data })
-    // .spread((result, created) => {
-    //   console.log({ result, created })
-    //   return { result, created }
-    // }).catch((error) => {
-    //   console.log({ result: error, created: false, error: true })
-    //   return { result: error, created: false, error: true }
-    // })
+    .spread((result, created) => {
+      return { result, created }
+    }).catch((error) => {
+      return { result: error, created: false, error: true }
+    })
   }
 
 }
