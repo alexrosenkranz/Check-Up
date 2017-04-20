@@ -36,3 +36,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0] - 2017-04-20
 ### Added
+- added queries for providers model and patientproviders model
+- added unit tests for the new queries

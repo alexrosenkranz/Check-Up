@@ -50,8 +50,34 @@ router.post('/new-provider', (req, res) => {
   const { first_name, last_name, specialty, phone } = req.body
   const providerData = { first_name, last_name, specialty, phone }
   Query.addProvider(providerData).then((result) => {
-    // const r = JSON.parse(JSON.stringify(result))
-    // console.log(r)
+    res.json(result)
+  })
+})
+
+/** ======  PatientProvider Queries ==========
+ * Should be able to:
+ * 1) add new patient provider relationship
+ * 2) remove a patient provider relationship
+ */
+
+/**
+ * @return result {object} - has key of result, created. If error, returns a key of error, and erro msg in result.
+ */
+router.post('/new-patient-provider', (req, res) => {
+  const { patientId, providerId } = req.body
+  Query.addPatientProvider(patientId, providerId).then((result) => {
+    res.json(result)
+  })
+})
+
+/**
+ * @return result {object} - either has key of error: 'error msg', or key of success: true
+ */
+router.post('/remove-patient-provider', (req, res) => {
+  const { patientId, providerId } = req.body
+  // TO DO: autentication, make sure user's id === patientId or something like that
+  // so you can't destroy someone else's data
+  Query.removePatientProvider(patientId, providerId).then((result) => {
     res.json(result)
   })
 })
