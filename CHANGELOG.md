@@ -27,10 +27,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - added travis ci integration, for testing all pr
 
-## [0.9] - 2017-04-19
+## [0.9] - 2017-04-20
 ### Added
 - M:M relationship between patient and providers, with migration.
 - Added bcrypt hashing patient password before saving hook
 - adjusted tests
-### TO DO
 - compare hashed passwords
+
+## [1.0] - 2017-04-20
+### Added
