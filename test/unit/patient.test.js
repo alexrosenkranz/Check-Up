@@ -51,6 +51,9 @@ describe(title, () => {
 
   it('should be able to add a new patient', (done) => {
     Query.addPatient(patientA).spread((patient, created) => {
+      // Check password on patient-sequelize object before the JSON hack
+      expect(patient.comparePassword(patientA.password)).to.be.true()
+      expect(patient.comparePassword('wrongPassword')).to.be.false()
       const patientData = JSON.parse(JSON.stringify(patient)) // hack so you don't have to get .dataValues
       try {
         expect(patientData).to.contain.all.keys(
@@ -60,8 +63,8 @@ describe(title, () => {
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
-        delete patientData.password // !temporarily, before we compare hashed password!
-        delete patientA.password // also temporary
+        delete patientData.password // passwords are checked earlier! ^
+        delete patientA.password
         assert.deepEqual(patientData, patientA)
         done()
       } catch (e) {
@@ -72,6 +75,9 @@ describe(title, () => {
 
   it('should be able to add another new patient', (done) => {
     Query.addPatient(patientB).spread((patient, created) => {
+      // Check password on patient-sequelize object before the JSON hack
+      expect(patient.comparePassword(patientB.password)).to.be.true()
+      expect(patient.comparePassword('wrongPassword')).to.be.false()
       const patientData = JSON.parse(JSON.stringify(patient))
       try {
         expect(patientData).to.contain.all.keys(
@@ -93,6 +99,7 @@ describe(title, () => {
 
   it('should not be able to add the same patient again', (done) => {
     Query.addPatient(patientB).spread((patient, created) => {
+      expect(patient.comparePassword('wrongPassword')).to.be.false()
       const patientData = JSON.parse(JSON.stringify(patient))
       try {
         expect(patientData).to.contain.all.keys(
@@ -124,8 +131,8 @@ describe(title, () => {
         delete queryData[0].id
         delete queryData[0].updatedAt
         delete queryData[0].createdAt
-        delete queryData[0].password // !temporarily, before we compare hashed password!
-        delete patientA.password // also temporary
+        delete queryData[0].password
+        delete patientA.password
         assert.deepEqual(queryData[0], patientA)
         // test patient B? unnecessary probs ...
         done()
@@ -145,8 +152,8 @@ describe(title, () => {
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
-        delete patientData.password // !temporarily, before we compare hashed password!
-        delete patientB.password // also temporary
+        delete patientData.password
+        delete patientB.password
         assert.deepEqual(patientData, patientB)
         done()
       } catch (e) {
