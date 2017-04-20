@@ -1,4 +1,7 @@
 'use strict'
+/**
+ * using defauls of sequelize: so actual table name in database will be plural (ends in 's')
+ */
 module.exports = function (sequelize, DataTypes) {
   var PatientProvider = sequelize.define('PatientProvider', {
     Patient_id: DataTypes.INTEGER,
