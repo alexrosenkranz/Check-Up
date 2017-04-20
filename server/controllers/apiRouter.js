@@ -56,4 +56,21 @@ router.post('/new-provider', (req, res) => {
   })
 })
 
+/** ======  PatientProvider Queries ==========
+ * Should be able to:
+ * 1) add new patient provider relationship
+ * 2) remove a patient provider relationship
+ */
+router.post('/new-patient-provider', (req, res) => {
+  const { patientId, providerId } = req.body
+  Query.addPatientProvider(patientId, providerId)
+  .spread((result, created) => {
+    return res.json({ result, created })
+    // return res.json({ result, created })
+  }).catch((error) => {
+    // return res.json({ result: error, created: false, error: true }) // maybe sanitize error msg?? for security?
+    return res.json({ result: error, created: false, error: true })
+  })
+})
+
 module.exports = router
