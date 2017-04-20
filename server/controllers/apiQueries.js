@@ -21,5 +21,14 @@ module.exports = {
   },
   addPatient: (ptObj) => {
     return db.Patient.findOrCreate({ where: { email: ptObj.email }, defaults: ptObj })
+  },
+  /**
+   *  =========== Provider related Queries ============
+   */
+  addProvider: (providerObj) => {
+    return db.Provider.create(providerObj)
+  },
+  findAllProviders: () => {
+    return db.Provider.findAll()
   }
 }

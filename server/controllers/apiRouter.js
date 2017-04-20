@@ -14,13 +14,13 @@ router.get('/test', (req, res) => {
  * GET api/v1/patient --> returns all patient info
  * GET api/v1/patient/:id
  */
-router.get('/patient', (req, res) => {
+router.get('/all-patients', (req, res) => {
   Query.findAllPatients().then((result) => {
     return res.json(result)
   })
 })
 
-router.post('/patient', (req, res) => {
+router.post('/new-patient', (req, res) => {
   const { email, first_name, last_name, password } = req.body
   const patientData = { email, first_name, last_name, password }
   Query.addPatient(patientData).spread((patient, created) => {
@@ -33,7 +33,6 @@ router.post('/patient', (req, res) => {
 
 router.get('/patient/:id', (req, res) => {
   Query.findPatientById(req.params.id).then((result) => {
-    // console.log(result)
     return res.json(result)
   })
 })
@@ -41,8 +40,20 @@ router.get('/patient/:id', (req, res) => {
 /** ======  Providers Queries ==========
  * GET api/v1/providers --> returns all providers info
  */
-// router.get('/providers', (req, res) => {
-//   return res.json({})
-// })
+router.get('/all-providers', (req, res) => {
+  Query.findAllProviders().then((results) => {
+    res.json(results)
+  })
+})
+
+router.post('/new-provider', (req, res) => {
+  const { first_name, last_name, specialty, phone } = req.body
+  const providerData = { first_name, last_name, specialty, phone }
+  Query.addProvider(providerData).then((result) => {
+    // const r = JSON.parse(JSON.stringify(result))
+    // console.log(r)
+    res.json(result)
+  })
+})
 
 module.exports = router
