@@ -19,13 +19,35 @@ module.exports = function (sequelize, DataTypes) {
           through: models.PatientProvider,
           foreignKey: 'Patient_id'
         })
+      },
+      hashPassword: function (inputPassword) {
+        return new Promise((resolve, reject) => {
+          bcrypt.genSalt(10)
+          .then((salt, error) => {
+            if (error) {
+              return reject(error)
+            }
+            return bcrypt.hash(inputPassword, salt)
+          })
+          .then((hash, error) => {
+            if (error) {
+              return reject(error)
+            }
+            return resolve(hash)
+          })
+        }) // ends new Promise
+      }
+    },
+    instanceMethods: {
+      authenticate: function () {
+        //
       }
     },
     hooks: {
       beforeCreateOptions: {},
       beforeCreate: function (pt, beforeCreateOptions, done) {
         const password = JSON.parse(JSON.stringify(pt)).password
-        return hashPassword(password).then((hash) => {
+        return this.hashPassword(password).then((hash) => {
           pt.password = hash
           done()
         })
@@ -35,21 +57,3 @@ module.exports = function (sequelize, DataTypes) {
   return Patient
 }
 
-// ======= Helper Functions ==============
-function hashPassword (inputPassword) {
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(10)
-    .then((salt, error) => {
-      if (error) {
-        return reject(error)
-      }
-      return bcrypt.hash(inputPassword, salt)
-    })
-    .then((hash, error) => {
-      if (error) {
-        return reject(error)
-      }
-      return resolve(hash)
-    })
-  }) // ends new Promise
-}
