@@ -1,18 +1,25 @@
-const models = require('../db/models')
+const db = require('../db/models')
 
 module.exports = {
   /**  ====== PATIENT related Queries ========
    *
    */
   findPatientById: (id) => {
-    return models.Patient.findOne({
-      where: { id }
+    return db.Patient.findOne({
+      where: { id },
+      include: [
+        { model: db.Provider }
+      ]
     })
   },
   findAllPatients: () => {
-    return models.Patient.findAll()
+    return db.Patient.findAll({
+      include: [
+        { model: db.Provider }
+      ]
+    })
   },
   addPatient: (ptObj) => {
-    return models.Patient.findOrCreate({ where: { email: ptObj.email }, defaults: ptObj })
+    return db.Patient.findOrCreate({ where: { email: ptObj.email }, defaults: ptObj })
   }
 }

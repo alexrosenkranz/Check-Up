@@ -126,12 +126,13 @@ describe(title, () => {
         expect(queryData).to.have.lengthOf(2)
         // test patient A
         expect(queryData[0]).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'password', 'Providers', 'last_name', 'updatedAt', 'createdAt']
         )
         delete queryData[0].id
         delete queryData[0].updatedAt
         delete queryData[0].createdAt
         delete queryData[0].password
+        delete queryData[0].Providers
         delete patientA.password
         assert.deepEqual(queryData[0], patientA)
         // test patient B? unnecessary probs ...
@@ -147,12 +148,15 @@ describe(title, () => {
       const patientData = JSON.parse(JSON.stringify(result))  // sequelize hack yo
       try {
         expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'password', 'Providers', 'last_name', 'updatedAt', 'createdAt']
         )
+        // check the Providers array
+        expect(patientData.Providers).to.be.an('array')
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
         delete patientData.password
+        delete patientData.Providers // temporary, maybe take this out later? If I do a deep comparison?
         delete patientB.password
         assert.deepEqual(patientData, patientB)
         done()
