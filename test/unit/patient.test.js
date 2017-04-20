@@ -22,13 +22,15 @@ UNIT TEST - "patient" model
 const patientA = {
   email: 'john@gmail.com',
   first_name: 'john',
-  last_name: 'doe'
+  last_name: 'doe',
+  password: 'password123'
 }
 
 const patientB = {
   email: 'jane@gmail.com',
   first_name: 'jane',
-  last_name: 'doe'
+  last_name: 'doe',
+  password: 'password321'
 }
 
 describe(title, () => {
@@ -52,12 +54,14 @@ describe(title, () => {
       const patientData = JSON.parse(JSON.stringify(patient)) // hack so you don't have to get .dataValues
       try {
         expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'last_name', 'password', 'updatedAt', 'createdAt']
         )
         expect(created).to.be.true()
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
+        delete patientData.password // !temporarily, before we compare hashed password!
+        delete patientA.password // also temporary
         assert.deepEqual(patientData, patientA)
         done()
       } catch (e) {
@@ -71,12 +75,14 @@ describe(title, () => {
       const patientData = JSON.parse(JSON.stringify(patient))
       try {
         expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
         )
         expect(created).to.be.true()
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
+        delete patientData.password // !temporarily, before we compare hashed password!
+        delete patientB.password // also temporary
         assert.deepEqual(patientData, patientB)
         done()
       } catch (e) {
@@ -90,12 +96,14 @@ describe(title, () => {
       const patientData = JSON.parse(JSON.stringify(patient))
       try {
         expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
         )
         expect(created).to.be.false()
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
+        delete patientData.password // !temporarily, before we compare hashed password!
+        delete patientB.password // also temporary
         assert.deepEqual(patientData, patientB)
         done()
       } catch (e) {
@@ -111,11 +119,13 @@ describe(title, () => {
         expect(queryData).to.have.lengthOf(2)
         // test patient A
         expect(queryData[0]).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
         )
         delete queryData[0].id
         delete queryData[0].updatedAt
         delete queryData[0].createdAt
+        delete queryData[0].password // !temporarily, before we compare hashed password!
+        delete patientA.password // also temporary
         assert.deepEqual(queryData[0], patientA)
         // test patient B? unnecessary probs ...
         done()
@@ -130,11 +140,13 @@ describe(title, () => {
       const patientData = JSON.parse(JSON.stringify(result))  // sequelize hack yo
       try {
         expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'last_name', 'updatedAt', 'createdAt']
+          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
         )
         delete patientData.id
         delete patientData.updatedAt
         delete patientData.createdAt
+        delete patientData.password // !temporarily, before we compare hashed password!
+        delete patientB.password // also temporary
         assert.deepEqual(patientData, patientB)
         done()
       } catch (e) {

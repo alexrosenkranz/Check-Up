@@ -30,3 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.9] - 2017-04-19
 ### Added
 - M:M relationship between patient and providers, with migration.
+- Added bcrypt hashing patient password before saving hook
+- adjusted tests
+### TO DO
+- compare hashed passwords
