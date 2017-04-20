@@ -10,7 +10,10 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function (models) {
-        // associations can be defined here
+        Patient.belongsToMany(models.Provider, {
+          through: models.PatientProvider,
+          foreignKey: 'Patient_id'
+        })
       }
     }
   })
