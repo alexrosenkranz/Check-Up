@@ -13,12 +13,8 @@ const PORT = process.env.PORT || 3001
 // require models ------------------------- /
 const db = require('./db/models')
 
-// Express only serves static assets in production ... React PART
-// if (process.env.NODE_ENV === 'production') {
-  // app.use(express.static(path.join(__dirname, '/..', '/client/build')))
-// }
-// console.log(path.join(__dirname, '/..', '/client/dist'))
-app.use(express.static(path.join(__dirname, '/..', '/client/dist')))
+// Server staic files ------------------------------ /
+app.use(express.static(path.join(__dirname, '/..', '/browserClient/dist')))
 
 // App middleware ------------------------------ /
 app.use(morgan('dev')) // for logging

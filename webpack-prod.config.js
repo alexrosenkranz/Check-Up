@@ -6,9 +6,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json']
   },
-  entry: path.join(__dirname, '/client/src/index.jsx'),
+  entry: path.join(__dirname, '/browserClient/src/index.jsx'),
   output: {
-    path: path.join(__dirname, '/client/dist/'),
+    path: path.join(__dirname, '/browserClient/dist/'),
     filename: 'bundle.js'
   },
   module: {
