@@ -1,29 +1,21 @@
 import React from 'react'
 
-// const TestApi = React.createClass({
-//   render () {
-//     // const var
-//     return (
-//       <div>
-//         <h1>Hello from TestApi Component</h1>
-//       </div>
-//     )
-//   }
-// })
-
 class TestApi extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      name: 'Al Chew'
+    }
   }
   render () {
     // const var
     return (
       <div>
         <h1>Hello from TestApi Component</h1>
+        <p>Hi from {this.state.name}</p>
       </div>
     )
   }
 }
 
-// module.exports = TestApi
 export default TestApi
