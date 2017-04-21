@@ -3,7 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 require('dotenv').load()
-// const path = require('path')
+const path = require('path')
 
 // Create express App ------------------------- /
 const app = express()
@@ -17,6 +17,8 @@ const db = require('./db/models')
 // if (process.env.NODE_ENV === 'production') {
   // app.use(express.static(path.join(__dirname, '/..', '/client/build')))
 // }
+// console.log(path.join(__dirname, '/..', '/client/dist'))
+app.use(express.static(path.join(__dirname, '/..', '/client/dist')))
 
 // App middleware ------------------------------ /
 app.use(morgan('dev')) // for logging
@@ -24,6 +26,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Route config -------------------------------------------/
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/index.html'))
+})
 app.use('/api/v1', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
