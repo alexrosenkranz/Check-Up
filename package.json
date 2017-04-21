@@ -4,6 +4,8 @@
   "description": "a patient healthcare monitoring app",
   "main": "server/server.js",
   "scripts": {
+    "pre-production-server": "NODE_ENV='production' ./node_modules/.bin/sequelize db:migrate",
+    "production-server": "NODE_ENV='production' node server/server.js",
     "dev": "export NODE_ENV=\"development\"; nodemon server/server.js",
     "dev-migrate:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate",
     "dev-migrate:undo:all": "export NODE_ENV=\"development\"; ./node_modules/.bin/sequelize db:migrate:undo:all",
