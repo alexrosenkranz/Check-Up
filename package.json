@@ -17,7 +17,7 @@
     "travis-test": "node_modules/.bin/sequelize db:migrate; find ./test -name '*.js' | node_modules/.bin/mocha --recursive",
     "lint:server": "node_modules/.bin/eslint --fix server/",
     "lint:test": "node_modules/.bin/eslint --fix test/",
-    "bundle": "./node_modules/.bin/webpack --config 'webpack-prod.config.js'"
+    "bundle": "./node_modules/.bin/webpack --config 'webpack-dev.config.js'"
   },
   "repository": {
     "type": "git",

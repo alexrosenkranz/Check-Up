@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  // watch: true,
+  watch: true,
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.json']
@@ -24,19 +24,5 @@ module.exports = {
         ]
       }
     }]
-
-    // v2
-    // rules: [
-    //   {
-    //     test: /\.jsx?$/,
-    //     use: {
-    //       loader: 'babel-loader',
-    //       options: {
-    //         presets: ['react', 'es2015']
-    //       }
-    //     },
-    //     exclude: /node_modules/
-    //   }
-    // ]
   } // closes module
 }
