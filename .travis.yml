@@ -1,9 +1,0 @@
-language: node_js
-node_js:
-  - 6.8.1
-services:
-  - mysql
-before_install:
-    - mysql -e "CREATE DATABASE checkup_travis_testing_db"
-script:
-  - npm run travis-test
