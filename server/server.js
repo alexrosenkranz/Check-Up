@@ -10,9 +10,6 @@ const app = express()
 app.disable('x-powered-by')
 const PORT = process.env.PORT || 3001
 
-// require models ------------------------- /
-const db = require('./db/models')
-
 // Server staic files ------------------------------ /
 app.use(express.static(path.join(__dirname, '/..', '/browserClient/dist')))
 
@@ -25,16 +22,31 @@ app.use(bodyParser.json())
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'))
 })
-app.use('/api/v1', require('./controllers/apiRouter'))
+// app.use('/api/v1', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
-if (process.env.NODE_ENV !== 'testing' || process.env.NODE_ENV !== 'travis') {
-  db.sequelize.sync().then(() => {
-    console.info('Databases are all synced!')
-    app.listen(PORT, (err) => {
-      if (err) console.log(err)
-      console.info(`${process.env.NODE_ENV} ENV: Listening on port: ${PORT}`)
+// if (process.env.NODE_ENV !== 'testing' || process.env.NODE_ENV !== 'travis') {
+//   db.sequelize.sync().then(() => {
+//     console.info('Databases are all synced!')
+//     app.listen(PORT, (err) => {
+//       if (err) console.log(err)
+//       console.info(`${process.env.NODE_ENV} ENV: Listening on port: ${PORT}`)
+//     })
+//   }).catch((err) => console.error(err))
+// }
+
+if (process.env.NODE_ENV !== 'testing') {
+  require('./models').connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('connected to the database ...')
+    app.listen(PORT, () => {
+      console.log(`Listening on port: ${PORT}`)
     })
-  }).catch((err) => console.error(err))
+  })
+  .catch((err) => {
+    console.log('Mongo DB connection error')
+    console.log(err)
+  })
 }
+
 module.exports = app
