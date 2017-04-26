@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Navigator } from 'react-native'
 import { Constants } from 'expo'; 
 
-import { Container, Title,Header, Content, Button, Form, Item, Input, Label, Body, Left, Icon, H1} from 'native-base'
+import { Container, Title,Header, Content, Button, Form, Item, Input, Label, Body, Left, Right, Icon, H1} from 'native-base'
 
 export default class Main extends Component {
   constructor(props) {
@@ -21,6 +21,7 @@ export default class Main extends Component {
           <Body>
             <Title>Header</Title>
           </Body>
+          <Right />
         </Header>
       </Container>
     )

@@ -14,16 +14,20 @@ export default class SignIn extends React.Component {
   }
 
   _signInButton = () => {
-
     this.props.navigator.push({
 		  name: 'Dashboard'
 		})
   }
 
+  _signUp = () => {
+    this.props.navigator.push({
+      name: 'SignUp'
+    })
+  }
 
   render() {
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         <View style={styles.inner}>
           <H1>Check Up!</H1>
           <Text>{'\n'}</Text>
@@ -40,14 +44,14 @@ export default class SignIn extends React.Component {
             </Button>
           
             <Text>{'\n'}Forgot your login?{'\n'}</Text>
-            <Text>Not a user? Sign up here.{'\n'}</Text>
+            <Text onPress={this._signUp}>Not a user? Sign up here.{'\n'}</Text>
         </View>
-      </View>
+      </Container>
     )
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -63,5 +67,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   }
-})
+}
 

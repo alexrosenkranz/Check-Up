@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Navigator } from 'react-native';
 import SignIn from './components/signin/SignIn'
+import SignUp from './components/signin/SignUp'
 import Main from './components/Main'
 import {
   StackNavigator,
@@ -15,15 +16,13 @@ export default class App extends React.Component {
    if(route.name == 'Dashboard') {
      return <Main navigator={navigator} />
    }
+  if (route.name == 'SignUp') {
+    return <SignUp navigator={navigator}/>
+  }
   }
  
   // PUT SOMETHING IN HERE TO ROUTE NAVIGATOR TO DASHBOARD IF LOGGED IN 
 
-  // async componentWillMount() {
-  //     await Expo.Font.loadAsync({
-  //       'Roboto': require('native-base/Fonts/Roboto.ttf'),
-  //       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf')
-  //     });
   render () {
     
     
