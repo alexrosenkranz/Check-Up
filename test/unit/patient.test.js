@@ -17,30 +17,6 @@ UNIT TEST - patient collection
 
 describe(title, () => {
   before((done) => {
-    // v1
-    // MONGOOSE_DB.connection.on('connected', () => {
-    //   MONGOOSE_DB.connection.db.dropDatabase()
-    //   console.log('dropping db')
-    //   done()
-    // })
-
-    // v2
-    // db.connection.collections['Patient'].drop(function (err) {
-    //   if (err) { console.log(err) }
-    //   console.log('collection dropped')
-    //   done()
-    // })
-
-    // v3
-    // db.connect(process.env.MONGODB_URI_TESTING, function () {
-    //   db.connection.db.dropDatabase()
-    // })
-    // v4
-    // MONGOOSE_DB.connection.db.dropDatabase(() => {
-    //   console.log('droped database from patient')
-    //   done()
-    // })
-    // v5
     MONGOOSE_DB.connection.dropDatabase(err => {
       if (err) { console.log(err) }
       console.log('droped database from patient')
@@ -49,11 +25,18 @@ describe(title, () => {
   })
 
   it('should be an empty "Patient" collection', (done) => {
+    // v1
     Patient.find({}).exec((err, queryResult) => {
-      // console.log(err) // should be null
+      if (err) { console.log(err) }
       console.log(queryResult)
       done()
     })
+    // v2
+    // Patient.find({}, function (err, queryResult) {
+    //   console.log(err)
+    //   console.log(queryResult)
+    //   done()
+    // })
   })
 })
 
