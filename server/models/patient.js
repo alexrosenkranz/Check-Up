@@ -15,13 +15,13 @@ patientSchema.methods = {
   checkPassword: function (inputPassword) {
     return bcrypt.compareSync(inputPassword, this.password)
   },
-  hashPassowrd: (plainTextPassword) => {
+  hashPassword: (plainTextPassword) => {
     return bcrypt.hashSync(plainTextPassword, 10)
   }
 }
 
 // 3. hooks
-patientSchema.pre('save', (done) => {
+patientSchema.pre('save', function (done) {
   this.password = this.hashPassword(this.password)
   done()
 })
