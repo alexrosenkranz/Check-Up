@@ -28,7 +28,6 @@ describe(title, () => {
   before((done) => {
     MONGOOSE_DB.connection.dropDatabase(err => {
       if (err) { console.log(err) }
-      console.log('droped database from patient')
       done()
     })
   })
@@ -37,7 +36,8 @@ describe(title, () => {
     // v1
     Patient.find({}).exec((err, queryResult) => {
       if (err) { console.log(err) }
-      console.log(queryResult)
+      // console.log(queryResult)
+      expect(queryResult).to.be.deep.equal([])
       done()
     })
   })
@@ -62,16 +62,31 @@ describe(title, () => {
   })
 
   it('should be able to find a patient given a username', (done) => {
-    Patient.find({ username: pt1.username }).exec((err, result) => {
-      // console.log('===================')
+    Patient.find({ username: pt1.username }).exec((err, results) => {
+      const ptResult = results[0]
       if (err) { console.log(err) }
-      console.log(result)
+      // console.log(result)
+      expect(ptResult).to.have.property('first_name', pt1.first_name)
+      expect(ptResult).to.have.property('last_name', pt1.last_name)
+      expect(ptResult).to.have.property('email', pt1.email)
       done()
     })
   })
 
-  it('should be able to sign in as a patient', (done) => {
-    done()
+  it('should be able to check that a password is right or wrong', (done) => {
+    Patient.find({ username: pt1.username }).exec((err, results) => {
+      if (err) { console.log(err) }
+      const ptResult = results[0]
+      try {
+        const correctPassword = ptResult.checkPassword(pt1.password)
+        const incorrectPassword = ptResult.checkPassword('wrongPassword')
+        expect(correctPassword).to.be.true()
+        expect(incorrectPassword).to.be.false()
+        done()
+      } catch (e) {
+        done(e)
+      }
+    })
   })
   // it('should be able to find a patient with the username', (done) => {
   //   done()

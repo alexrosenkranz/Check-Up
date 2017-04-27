@@ -19,7 +19,6 @@ describe(title, () => {
   before((done) => {
     MONGOOSE_DB.connection.dropDatabase(err => {
       if (err) { console.log(err) }
-      console.log('droped database from patient')
       done()
     })
   })
@@ -27,7 +26,7 @@ describe(title, () => {
   it('should be an empty "Patient" collection', (done) => {
     Patient.find({}).exec((err, queryResult) => {
       if (err) { console.log(err) }
-      console.log(queryResult)
+      expect(queryResult).to.be.deep.equal([])
       done()
     })
   })
