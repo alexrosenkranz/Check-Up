@@ -35,13 +35,13 @@ export default class Main extends Component {
           </Body>
           <Right />
         </Header>
-        <Content style={{flex: 1}}>
+        <Content style={{flex: 5, marginBottom: 20}}>
         <Appointments firstName={this.state.firstName} />
-        
-        <Button full style={{flex: 3}}><Text>Add Appointment</Text></Button>
-        <Button full style={{flex: 3}}><Text>Add Appointment</Text></Button>
-          
         </Content>
+        <Content style={{flex: 2}}>
+        <Button full><Text>Add Appointment</Text></Button>
+        <Button full><Text>Add Appointment</Text></Button>
+          </Content>
       </Container>
     )
   }

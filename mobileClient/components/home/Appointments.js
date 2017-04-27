@@ -59,20 +59,20 @@ export default class AppointmentsHome extends Component {
           <ListView
           dataSource={this.state.appointments}
           renderRow={(appt) => 
-                      <Card>
-                        <CardItem>
-                            <Left>
-                                <Body>
-                                    <Text style={{fontWeight: '700'}}>{appt.doctorName}</Text>
-                                    <Text note>{appt.apptDate} at {appt.apptTime}</Text>
-                                     <Button transparent>
-                                  <Icon active name="more" />
-                                  <Text>View Appointment Details</Text>
-                              </Button>
-                                </Body>
-                            </Left>
-                          </CardItem>
-                    </Card>   
+              <Card>
+                <CardItem>
+                    <Left>
+                        <Body>
+                            <Text style={{fontWeight: '700'}}>{appt.doctorName}</Text>
+                            <Text note>{appt.apptDate} at {appt.apptTime}</Text>
+                              <Button transparent>
+                          <Icon active name="more" />
+                          <Text>View Appointment Details</Text>
+                      </Button>
+                        </Body>
+                    </Left>
+                  </CardItem>
+            </Card>   
         }/>
         </Content>
     )
