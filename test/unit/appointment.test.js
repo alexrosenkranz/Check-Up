@@ -6,6 +6,8 @@ const expect = require('chai').expect
 const assert = require('chai').assert
 chai.use(dirtyChai)
 
+const moment = require('moment')
+
 const MONGOOSE_DB = require('../config').database
 const Patient = require('../config').Patient
 const Appointment = require('../config').Appointment
@@ -26,7 +28,7 @@ const pt1 = {
 }
 
 const app1 = {
-  appTime: '2017-04-27 20:37:02.874Z',
+  appTime: moment().toISOString(),
   provider: 'Dr. Suess',
   notes: 'Working on my rhymes'
 }
@@ -45,13 +47,20 @@ describe(title, () => {
         results.forEach((result) => {
           expect(result).to.be.deep.equal([])
         })
-        done()
+        // add new patient
+        const newPatient = new Patient(pt1)
+        newPatient.save((err) => {
+          if (err) { console.log(err) }
+          done()
+        })
       })
     })
   })
 
+
   it('should let me make a new appointment', (done) => {
-    Query.addAppointment('213231', app1).then(()=> {
+    Query.addAppointment(pt1.email, app1).then((result) => {
+      console.log(result)
       done()
     })
   })

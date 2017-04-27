@@ -1,6 +1,7 @@
 // const db = require('../db/models')
 const Patient = require('../models/patient')
 const Appointment = require('../models/appointment')
+// const moment = require('moment')
 
 module.exports = {
   // ========== Patient Queries ========
@@ -24,13 +25,21 @@ module.exports = {
   }, // ends addPatient
 
   // ========== Appointment Queries ========
-  addAppointment: (_id, appData) => {
+  addAppointment: (email, appData) => {
     return new Promise((resolve, reject) => {
+      // 1. Make a newApp
       const newApp = new Appointment(appData)
       newApp.save(function (err, appDoc, numAff) {
         if (err) { return reject(err) }
-        console.log(appDoc)
-        resolve(appData)
+        // 2. find user, and append _id
+        Patient.findOneAndUpdate(
+          { email },
+          { $push: { appointments: appDoc._id } },
+          { new: true },
+          function (err, doc) {
+            if (err) { return reject(err) }
+            resolve(doc)
+          })
       })
     })
   } // ends addAppointment
