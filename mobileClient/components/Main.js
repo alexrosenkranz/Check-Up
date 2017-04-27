@@ -21,12 +21,12 @@ export default class Main extends Component {
 
 
   render() {
-    console.log(this.props._openDrawer)
+        
     return (
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button onPress={this.props._openDrawer} transparent>
+            <Button onPress={this.props.navigator._openDrawer} transparent>
               <Icon name='menu' />
             </Button>
           </Left>
@@ -35,13 +35,15 @@ export default class Main extends Component {
           </Body>
           <Right />
         </Header>
-        <Content style={{flex: 5, marginBottom: 20}}>
+        <Content style={{flex:1}}>
+        <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
         <Appointments firstName={this.state.firstName} />
         </Content>
-        <Content style={{flex: 2}}>
-        <Button full><Text>Add Appointment</Text></Button>
+        <Content style={{flex: 1}}>
+        <Button full style={{flex: 2}}><Text>Add Appointment</Text></Button>
         <Button full><Text>Add Appointment</Text></Button>
           </Content>
+        </Content>
       </Container>
     )
   }
