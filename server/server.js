@@ -22,7 +22,7 @@ app.use(bodyParser.json())
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'))
 })
-// app.use('/api/v1', require('./controllers/apiRouter'))
+app.use('/api/v2', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
 if (process.env.NODE_ENV !== 'testing') {

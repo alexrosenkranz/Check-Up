@@ -1,41 +1,47 @@
-// 'use strict'
-// const express = require('express')
-// const router = express.Router()
-// const Query = require('./apiQueries')
+'use strict'
+const express = require('express')
+const router = express.Router()
+const Query = require('./apiQueries')
 
-// router.get('/test', (req, res) => {
-//   res.json({
-//     test: true,
-//     msg: 'the test past if you can read this'
-//   })
-// })
+router.get('/test', (req, res) => {
+  res.json({
+    test: true,
+    msg: 'the test past if you can read this'
+  })
+})
 
-// /** ======  Patient Queries ==========
-//  * GET api/v1/patient --> returns all patient info
-//  * GET api/v1/patient/:id
-//  */
-// router.get('/all-patients', (req, res) => {
-//   Query.findAllPatients().then((result) => {
-//     return res.json(result)
-//   })
-// })
+/** ======  Patient Queries ==========
+* Find all patients (ADMIN), get patient by username, by id
+* POST
+*/
+router.get('/all-patients', (req, res) => {
+  Query.findAllPatients().then((result) => {
+    return res.json(result)
+  })
+})
 
-// router.post('/new-patient', (req, res) => {
-//   const { email, first_name, last_name, password } = req.body
-//   const patientData = { email, first_name, last_name, password }
-//   Query.addPatient(patientData).spread((patient, created) => {
-//     if (!created) {
-//       return res.json({error: true, msg: `Sorry there already is a patient with that email`})
-//     }
-//     return res.json({ patient, created })
-//   })
-// })
+router.get('/patient/username/:email', (req, res) => {
+  Query.findPatientByUsername(req.params.email).then((result) => {
+    return res.json(result)
+  })
+})
 
-// router.get('/patient/:id', (req, res) => {
-//   Query.findPatientById(req.params.id).then((result) => {
-//     return res.json(result)
-//   })
-// })
+router.get('/patient/id/:_id', (req, res) => {
+  Query.findPatientById(req.params._id).then((result) => {
+    return res.json(result)
+  })
+})
+
+router.post('/new-patient', (req, res) => {
+  const { email, first_name, last_name, password } = req.body
+  const ptData = { email, first_name, last_name, password }
+  Query.addPatient(ptData).then((result) => {
+    res.json(result)
+  }).catch((err) => {
+    res.json(err)
+  })
+})
+
 
 // /** ======  Providers Queries ==========
 //  * GET api/v1/providers --> returns all providers info
@@ -82,4 +88,4 @@
 //   })
 // })
 
-// module.exports = router
+module.exports = router
