@@ -6,163 +6,90 @@ const expect = require('chai').expect
 const assert = require('chai').assert
 chai.use(dirtyChai)
 
-const models = require('../../server/db/models')
-const Query = require('../../server/controllers/apiQueries')
+const MONGOOSE_DB = require('../config').database
+const Patient = require('../config').Patient
 
 const title =
 `
-===========================
-UNIT TEST - "patient" model
-===========================
+==============================
+UNIT TEST - patient collection
+==============================
 `
 
-/**
- * Testing Variables
- */
-const patientA = {
-  email: 'john@gmail.com',
-  first_name: 'john',
-  last_name: 'doe',
-  password: 'password123'
-}
-
-const patientB = {
-  email: 'jane@gmail.com',
-  first_name: 'jane',
-  last_name: 'doe',
-  password: 'password321'
+// ========= TESTING variables =========
+const pt1 = {
+  first_name: 'John',
+  last_name: 'Doe',
+  email: 'johndoe@gmail.com',
+  password: 'superSecret'
 }
 
 describe(title, () => {
-  before(() => {
-    return models.sequelize.sync({ force: true })
+  before((done) => {
+    MONGOOSE_DB.connection.dropDatabase(err => {
+      if (err) { console.log(err) }
+      done()
+    })
   })
 
-  it('should be an empty patient table', (done) => {
-    Query.findAllPatients().then((queryResult) => {
+  it('should be an empty "Patient" collection', (done) => {
+    // v1
+    Patient.find({}).exec((err, queryResult) => {
+      if (err) { console.log(err) }
+      // console.log(queryResult)
+      expect(queryResult).to.be.deep.equal([])
+      done()
+    })
+  })
+
+  it('should be able to enter a new patient', (done) => {
+    const newPatient = new Patient(pt1)
+    newPatient.save(function (err, ptDoc, numAff) {
+      const ptObj = JSON.parse(JSON.stringify(ptDoc)) // hack, since ptDoc is a wrapper obj
+      // console.log(ptObj)
+      // console.log('===================')
+      // console.log(err)
+      // console.log(ptDoc)
+      // console.log(numAff)
+      // expect(err).to.be.a('null')
+      assert.isNull(err, 'there should not be an error')
+      expect(ptObj).to.have.all.keys([
+        '__v', 'first_name', 'last_name', 'email', 'password', '_id'
+      ])
+      assert.strictEqual(numAff, 1, 'should only affect 1 doc')
+      done()
+    })
+  })
+
+  it('should be able to find a patient given a username', (done) => {
+    Patient.find({ username: pt1.username }).exec((err, results) => {
+      const ptResult = results[0]
+      if (err) { console.log(err) }
+      // console.log(result)
+      expect(ptResult).to.have.property('first_name', pt1.first_name)
+      expect(ptResult).to.have.property('last_name', pt1.last_name)
+      expect(ptResult).to.have.property('email', pt1.email)
+      done()
+    })
+  })
+
+  it('should be able to check that a password is right or wrong', (done) => {
+    Patient.find({ username: pt1.username }).exec((err, results) => {
+      if (err) { console.log(err) }
+      const ptResult = results[0]
       try {
-        assert.deepEqual(queryResult, [])
+        const correctPassword = ptResult.checkPassword(pt1.password)
+        const incorrectPassword = ptResult.checkPassword('wrongPassword')
+        expect(correctPassword).to.be.true()
+        expect(incorrectPassword).to.be.false()
         done()
       } catch (e) {
         done(e)
       }
     })
   })
-
-  it('should be able to add a new patient', (done) => {
-    Query.addPatient(patientA).spread((patient, created) => {
-      // Check password on patient-sequelize object before the JSON hack
-      expect(patient.comparePassword(patientA.password)).to.be.true()
-      expect(patient.comparePassword('wrongPassword')).to.be.false()
-      const patientData = JSON.parse(JSON.stringify(patient)) // hack so you don't have to get .dataValues
-      try {
-        expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'last_name', 'password', 'updatedAt', 'createdAt']
-        )
-        expect(created).to.be.true()
-        delete patientData.id
-        delete patientData.updatedAt
-        delete patientData.createdAt
-        delete patientData.password // passwords are checked earlier! ^
-        delete patientA.password
-        assert.deepEqual(patientData, patientA)
-        done()
-      } catch (e) {
-        done(e)
-      }
-    })
-  })
-
-  it('should be able to add another new patient', (done) => {
-    Query.addPatient(patientB).spread((patient, created) => {
-      // Check password on patient-sequelize object before the JSON hack
-      expect(patient.comparePassword(patientB.password)).to.be.true()
-      expect(patient.comparePassword('wrongPassword')).to.be.false()
-      const patientData = JSON.parse(JSON.stringify(patient))
-      try {
-        expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
-        )
-        expect(created).to.be.true()
-        delete patientData.id
-        delete patientData.updatedAt
-        delete patientData.createdAt
-        delete patientData.password // !temporarily, before we compare hashed password!
-        delete patientB.password // also temporary
-        assert.deepEqual(patientData, patientB)
-        done()
-      } catch (e) {
-        done(e)
-      }
-    })
-  })
-
-  it('should not be able to add the same patient again', (done) => {
-    Query.addPatient(patientB).spread((patient, created) => {
-      expect(patient.comparePassword('wrongPassword')).to.be.false()
-      const patientData = JSON.parse(JSON.stringify(patient))
-      try {
-        expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'password', 'last_name', 'updatedAt', 'createdAt']
-        )
-        expect(created).to.be.false()
-        delete patientData.id
-        delete patientData.updatedAt
-        delete patientData.createdAt
-        delete patientData.password // !temporarily, before we compare hashed password!
-        delete patientB.password // also temporary
-        assert.deepEqual(patientData, patientB)
-        done()
-      } catch (e) {
-        done(e)
-      }
-    })
-  })
-
-  it('should be able to find all patients entered', (done) => {
-    Query.findAllPatients().then((results) => {
-      const queryData = JSON.parse(JSON.stringify(results))  // sequelize hack yo
-      try {
-        expect(queryData).to.have.lengthOf(2)
-        // test patient A
-        expect(queryData[0]).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'password', 'Providers', 'last_name', 'updatedAt', 'createdAt']
-        )
-        delete queryData[0].id
-        delete queryData[0].updatedAt
-        delete queryData[0].createdAt
-        delete queryData[0].password
-        delete queryData[0].Providers
-        delete patientA.password
-        assert.deepEqual(queryData[0], patientA)
-        // test patient B? unnecessary probs ...
-        done()
-      } catch (e) {
-        done(e)
-      }
-    })
-  })
-
-  it('should be able to find the first patient we entered', (done) => {
-    Query.findPatientById(2).then((result) => {
-      const patientData = JSON.parse(JSON.stringify(result))  // sequelize hack yo
-      try {
-        expect(patientData).to.contain.all.keys(
-          ['id', 'email', 'first_name', 'password', 'Providers', 'last_name', 'updatedAt', 'createdAt']
-        )
-        // check the Providers array
-        expect(patientData.Providers).to.be.an('array')
-        delete patientData.id
-        delete patientData.updatedAt
-        delete patientData.createdAt
-        delete patientData.password
-        delete patientData.Providers // temporary, maybe take this out later? If I do a deep comparison?
-        delete patientB.password
-        assert.deepEqual(patientData, patientB)
-        done()
-      } catch (e) {
-        done(e)
-      }
-    })
-  })
+  // it('should be able to find a patient with the username', (done) => {
+  //   done()
+  // })
 })
+

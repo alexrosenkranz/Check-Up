@@ -11,75 +11,81 @@ router.get('/test', (req, res) => {
 })
 
 /** ======  Patient Queries ==========
- * GET api/v1/patient --> returns all patient info
- * GET api/v1/patient/:id
- */
+* Find all patients (ADMIN), get patient by username, by id
+* POST
+*/
 router.get('/all-patients', (req, res) => {
   Query.findAllPatients().then((result) => {
     return res.json(result)
   })
 })
 
-router.post('/new-patient', (req, res) => {
-  const { email, first_name, last_name, password } = req.body
-  const patientData = { email, first_name, last_name, password }
-  Query.addPatient(patientData).spread((patient, created) => {
-    if (!created) {
-      return res.json({error: true, msg: `Sorry there already is a patient with that email`})
-    }
-    return res.json({ patient, created })
-  })
-})
-
-router.get('/patient/:id', (req, res) => {
-  Query.findPatientById(req.params.id).then((result) => {
+router.get('/patient/username/:email', (req, res) => {
+  Query.findPatientByUsername(req.params.email).then((result) => {
     return res.json(result)
   })
 })
 
-/** ======  Providers Queries ==========
- * GET api/v1/providers --> returns all providers info
- */
-router.get('/all-providers', (req, res) => {
-  Query.findAllProviders().then((results) => {
-    res.json(results)
+router.get('/patient/id/:_id', (req, res) => {
+  Query.findPatientById(req.params._id).then((result) => {
+    return res.json(result)
   })
 })
 
-router.post('/new-provider', (req, res) => {
-  const { first_name, last_name, specialty, phone } = req.body
-  const providerData = { first_name, last_name, specialty, phone }
-  Query.addProvider(providerData).then((result) => {
+router.post('/new-patient', (req, res) => {
+  const { email, first_name, last_name, password } = req.body
+  const ptData = { email, first_name, last_name, password }
+  Query.addPatient(ptData).then((result) => {
     res.json(result)
+  }).catch((err) => {
+    res.json(err)
   })
 })
 
-/** ======  PatientProvider Queries ==========
- * Should be able to:
- * 1) add new patient provider relationship
- * 2) remove a patient provider relationship
- */
 
-/**
- * @return result {object} - has key of result, created. If error, returns a key of error, and erro msg in result.
- */
-router.post('/new-patient-provider', (req, res) => {
-  const { patientId, providerId } = req.body
-  Query.addPatientProvider(patientId, providerId).then((result) => {
-    res.json(result)
-  })
-})
+// /** ======  Providers Queries ==========
+//  * GET api/v1/providers --> returns all providers info
+//  */
+// router.get('/all-providers', (req, res) => {
+//   Query.findAllProviders().then((results) => {
+//     res.json(results)
+//   })
+// })
 
-/**
- * @return result {object} - either has key of error: 'error msg', or key of success: true
- */
-router.post('/remove-patient-provider', (req, res) => {
-  const { patientId, providerId } = req.body
-  // TO DO: autentication, make sure user's id === patientId or something like that
-  // so you can't destroy someone else's data
-  Query.removePatientProvider(patientId, providerId).then((result) => {
-    res.json(result)
-  })
-})
+// router.post('/new-provider', (req, res) => {
+//   const { first_name, last_name, specialty, phone } = req.body
+//   const providerData = { first_name, last_name, specialty, phone }
+//   Query.addProvider(providerData).then((result) => {
+//     res.json(result)
+//   })
+// })
+
+// /** ======  PatientProvider Queries ==========
+//  * Should be able to:
+//  * 1) add new patient provider relationship
+//  * 2) remove a patient provider relationship
+//  */
+
+// /**
+//  * @return result {object} - has key of result, created. If error, returns a key of error, and erro msg in result.
+//  */
+// router.post('/new-patient-provider', (req, res) => {
+//   const { patientId, providerId } = req.body
+//   Query.addPatientProvider(patientId, providerId).then((result) => {
+//     res.json(result)
+//   })
+// })
+
+// /**
+//  * @return result {object} - either has key of error: 'error msg', or key of success: true
+//  */
+// router.post('/remove-patient-provider', (req, res) => {
+//   const { patientId, providerId } = req.body
+//   // TO DO: autentication, make sure user's id === patientId or something like that
+//   // so you can't destroy someone else's data
+//   Query.removePatientProvider(patientId, providerId).then((result) => {
+//     res.json(result)
+//   })
+// })
 
 module.exports = router

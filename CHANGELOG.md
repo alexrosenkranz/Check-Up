@@ -38,3 +38,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - added queries for providers model and patientproviders model
 - added unit tests for the new queries
+* Last working branch of this version `11/appointmentTable`
+
+# Version 2 -- Using MongoDB
+----------------------------
+## [2.0.1] - 2017-04-25
+### Added
+- added mongo & mongoose, took out MySQL and sequelize
+- added travis.yml testing and working test files.
+### BUGS
+- hashPassword not working from patientSchema
+
+## [2.0.2] - 2017-04-27
+### Added
+- unit tests for patientSchema
+- some basic routes & queries for the patient collection
+### Fixes
+- fixed hashPassword
