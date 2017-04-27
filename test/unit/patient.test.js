@@ -51,7 +51,8 @@ describe(title, () => {
       // console.log(err)
       // console.log(ptDoc)
       // console.log(numAff)
-      expect(err).to.be.a('null')
+      // expect(err).to.be.a('null')
+      assert.isNull(err, 'there should not be an error')
       expect(ptObj).to.have.all.keys([
         '__v', 'first_name', 'last_name', 'email', 'password', '_id'
       ])
@@ -59,5 +60,21 @@ describe(title, () => {
       done()
     })
   })
+
+  it('should be able to find a patient given a username', (done) => {
+    Patient.find({ username: pt1.username }).exec((err, result) => {
+      // console.log('===================')
+      if (err) { console.log(err) }
+      console.log(result)
+      done()
+    })
+  })
+
+  it('should be able to sign in as a patient', (done) => {
+    done()
+  })
+  // it('should be able to find a patient with the username', (done) => {
+  //   done()
+  // })
 })
 

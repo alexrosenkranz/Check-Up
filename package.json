@@ -7,6 +7,7 @@
     "connect-test-db": "export PORT=8080 NODE_ENV='testing'; node ./test/connection.js",
     "mocha-tests": "export PORT=8080 NODE_ENV='testing'; find ./test -name '*test.js' | mocha --recursive",
     "test": "concurrently \"npm run connect-test-db\" \"npm run mocha-tests\" ",
+    "travis-test": "find ./test -name '*test.js' | node_modules/.bin/mocha --recursive",
     "prod-build": "./node_modules/.bin/webpack --config 'webpack-prod.config.js",
     "dev": "export NODE_ENV=\"development\"; nodemon server/server.js",
     "lint:server": "node_modules/.bin/eslint --fix server/",
