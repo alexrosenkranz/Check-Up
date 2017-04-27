@@ -1,4 +1,28 @@
 // const db = require('../db/models')
+const Patient = require('../models/patient')
+
+module.exports = {
+  // ========== Patient Queries ========
+  findAllPatients: () => {
+    return Patient.find({})
+  },
+  findPatientByUsername: (email) => {
+    return Patient.find({ email })
+  },
+  findPatientById: (_id) => {
+    return Patient.find({ _id })
+  },
+  addPatient: (ptData) => {
+    return new Promise((resolve, reject) => {
+      const newPt = new Patient(ptData)
+      newPt.save((err, doc) => {
+        if (err) { reject(err) }
+        resolve(doc)
+      })
+    }) // closes promise
+  } // ends addPatient
+
+} // end of module.exports
 
 // module.exports = {
 //   /**  ====== PATIENT related Queries ========
