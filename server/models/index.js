@@ -16,7 +16,6 @@ module.exports.connect = (uri) => {
       }
     })
     // load models
-    // require('./patient')
+    require('./patient')
   }) // ends Promise
 }
-

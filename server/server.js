@@ -25,16 +25,6 @@ app.get('/', (req, res) => {
 // app.use('/api/v1', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
-// if (process.env.NODE_ENV !== 'testing' || process.env.NODE_ENV !== 'travis') {
-//   db.sequelize.sync().then(() => {
-//     console.info('Databases are all synced!')
-//     app.listen(PORT, (err) => {
-//       if (err) console.log(err)
-//       console.info(`${process.env.NODE_ENV} ENV: Listening on port: ${PORT}`)
-//     })
-//   }).catch((err) => console.error(err))
-// }
-
 if (process.env.NODE_ENV !== 'testing') {
   require('./models').connect(process.env.MONGODB_URI)
   .then(() => {
