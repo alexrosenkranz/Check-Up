@@ -21,28 +21,28 @@ import {
   H2,
   H3
 } from 'native-base'
-import {Constants} from 'expo';
+import Expo, {Constants} from 'expo';
 import Main from '../Main'
 
 
 export default class SignIn extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      formValue: {},
       firstName: '',
       lastName: '',
       gender: '-',
       email: '',
       phoneNumber: '',
-      allergies: '',
+      password: ''
     }
   }
-  
 
   _signUpButton = () => {
-    console.log(this.state)
-    // this.props.navigator.push({name: 'Dashboard'})
+    this.props.navigator.push({
+      name: 'Dashboard',
+      userInfo: this.state
+  })
   }
 
   render() {
@@ -51,7 +51,7 @@ export default class SignIn extends React.Component {
 
 
     return (
-      <Container>
+      <Container style={{paddingTop: Constants.statusBarHeight}}>
         <Header>
           <Left>
             <Button onPress={() => this.props.navigator.pop()} transparent>
