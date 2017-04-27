@@ -1,5 +1,6 @@
 node_modules
-client/node_modules/
+browserClient/node_modules/
+mobileClient/node_modules/
 npm-debug.log
 yarn.lock
 .env
