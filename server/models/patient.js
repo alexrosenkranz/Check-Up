@@ -7,7 +7,13 @@ const patientSchema = new Schema({
   first_name: {type: String, required: true},
   last_name: {type: String, require: true},
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  appointments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Appointment'
+    }
+  ]
 })
 
 // 2. user schema methods

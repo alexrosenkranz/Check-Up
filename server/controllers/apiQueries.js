@@ -1,5 +1,6 @@
 // const db = require('../db/models')
 const Patient = require('../models/patient')
+const Appointment = require('../models/appointment')
 
 module.exports = {
   // ========== Patient Queries ========
@@ -20,7 +21,19 @@ module.exports = {
         resolve(doc)
       })
     }) // closes promise
-  } // ends addPatient
+  }, // ends addPatient
+
+  // ========== Appointment Queries ========
+  addAppointment: (_id, appData) => {
+    return new Promise((resolve, reject) => {
+      const newApp = new Appointment(appData)
+      newApp.save(function (err, appDoc, numAff) {
+        if (err) { return reject(err) }
+        console.log(appDoc)
+        resolve(appData)
+      })
+    })
+  } // ends addAppointment
 
 } // end of module.exports
 

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 module.exports.connect = (uri) => {
   mongoose.Promise = global.Promise
 
-  console.log('================')
+  // console.log('================')
   console.log(uri)
   console.log('================')
   const options = {}
@@ -21,3 +21,4 @@ module.exports.database = mongoose
 
 // load models
 module.exports.Patient = require('../server/models/patient')
+module.exports.Appointment = require('../server/models/appointment')
