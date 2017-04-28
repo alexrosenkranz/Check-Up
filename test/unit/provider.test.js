@@ -1,79 +1,70 @@
-// 'use strict'
-// /* global it, describe, before */
-// const chai = require('chai')
-// const dirtyChai = require('dirty-chai')
-// const expect = require('chai').expect
-// const assert = require('chai').assert
-// chai.use(dirtyChai)
+'use strict'
+/* global it, describe, before */
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = require('chai').expect
+chai.use(dirtyChai)
 
-// const models = require('../../server/db/models')
-// const Query = require('../../server/controllers/apiQueries')
+const MONGOOSE_DB = require('../config').database
+const Patient = require('../config').Patient
+const Appointment = require('../config').Appointment
+const Provider = require('../config').Provider
+const Query = require('../../server/controllers/apiQueries')
 
-// const title =
-// `
-// ===========================
-// UNIT TEST - "provider" model
-// ===========================
-// `
+const title =
+`
+==============================
+UNIT TEST - Provider collection
+==============================
+`
 
-// /**
-//  * Testing Variables
-//  */
-// const provider1 = {
-//   first_name: 'dr.',
-//   last_name: 'oz',
-//   specialty: 'tv',
-//   phone: '10123456789'
-// }
+// ========= TESTING variables =========
+const provider1 = {
+  first_name: 'Dr.',
+  last_name: 'Oz',
+  address: '123 main street',
+  specialty: 'tv'
+}
 
-// const provider2 = {
-//   first_name: 'Alex',
-//   last_name: 'rosenkranz',
-//   specialty: 'JavaScript',
-//   phone: '9876543210'
-// }
+const pt1 = {
+  first_name: 'John',
+  last_name: 'Doe',
+  email: 'johndoe@gmail.com',
+  password: 'superSecret'
+}
 
-// describe(title, () => {
-//   before(() => {
-//     return models.sequelize.sync({ force: true })
-//   })
+describe(title, () => {
+  before((done) => {
+    MONGOOSE_DB.connection.dropDatabase(err => {
+      if (err) { console.log(err) }
+      const ptCollection = Patient.find({})
+      const appCollection = Appointment.find({})
+      const providerCollection = Provider.find({})
+      // Check that all the collections are empty
+      Promise.all([
+        ptCollection,
+        appCollection,
+        providerCollection
+      ]).then((results) => {
+        results.forEach((result) => {
+          expect(result).to.be.deep.equal([])
+        })
+        // add the dumby patient
+        const newPatient = new Patient(pt1)
+        newPatient.save((err) => {
+          if (err) { console.log(err) }
+          done()
+        })
+      })
+    })
+  })
 
-//   it('should be an empty provider table', (done) => {
-//     Query.findAllProviders().then((queryResults) => {
-//       try {
-//         assert.deepEqual(queryResults, [])
-//         done()
-//       } catch (e) {
-//         done(e)
-//       }
-//     })
-//   })
+  it('should be able to enter a new provider', (done) => {
+    Query.addProvider(pt1.email, provider1).then((result) => {
+      console.log(result)
+      done()
+    })
+  })
+  // ---- end of its ----
+})
 
-//   it('should be able to add a new provider', (done) => {
-//     Query.addProvider(provider1).then((result) => {
-//       let providerData = JSON.parse(JSON.stringify(result))
-//       expect(providerData).to.contain.all.keys(
-//         ['id', 'first_name', 'last_name', 'specialty', 'phone', 'updatedAt', 'createdAt']
-//       )
-//       done()
-//     })
-//   })
-
-//   it('should be able to add another new provider', (done) => {
-//     Query.addProvider(provider2).then((result) => {
-//       let providerData = JSON.parse(JSON.stringify(result))
-//       expect(providerData).to.contain.all.keys(
-//         ['id', 'first_name', 'last_name', 'specialty', 'phone', 'updatedAt', 'createdAt']
-//       )
-//       done()
-//     })
-//   })
-
-//   it('should be able to find all the providers', (done) => {
-//     Query.findAllProviders().then((rawResults) => {
-//       const searchResults = JSON.parse(JSON.stringify(rawResults))
-//       expect(searchResults).to.have.lengthOf(2)
-//       done()
-//     })
-//   })
-// })
