@@ -6,13 +6,13 @@ const Appointment = require('../models/appointment')
 module.exports = {
   // ========== Patient Queries ========
   findAllPatients: () => {
-    return Patient.find({})
+    return Patient.find({}).populate('appointments')
   },
   findPatientByUsername: (email) => {
-    return Patient.find({ email })
+    return Patient.find({ email }).populate('appointments')
   },
   findPatientById: (_id) => {
-    return Patient.find({ _id })
+    return Patient.find({ _id }).populate('appointments')
   },
   addPatient: (ptData) => {
     return new Promise((resolve, reject) => {
