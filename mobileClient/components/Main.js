@@ -11,11 +11,16 @@ export default class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      userInfo: this.props.userInfo,
+      userInfo: '',
       firstName: 'Alex'
     }
   }
 
+  componentDidMount = () => {
+    let userInfo = this.props.userInfo
+
+    this.setState({userInfo})
+  }
 
 
 
@@ -37,7 +42,7 @@ export default class Main extends Component {
         </Header>
         <Content style={{flex:1}}>
         <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
-        <Appointments firstName={this.state.firstName} />
+        <Appointments firstName={this.state.userInfo.first_name} />
         </Content>
         <Content style={{flex: 1}}>
         <Button full style={{flex: 2}}><Text>Add Appointment</Text></Button>

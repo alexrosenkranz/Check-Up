@@ -8,7 +8,7 @@ import {
   Body,
   Form,
   Item,
-  Input,
+  Input, 
   Label,
   Picker,
   Button,
@@ -40,7 +40,6 @@ export default class SignIn extends React.Component {
   }
 
   _signUpButton = () => {
-    
     _signUp(this.state).then((user) => {
       console.log(user)
         this.props.navigator.push({
