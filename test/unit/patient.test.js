@@ -8,6 +8,7 @@ chai.use(dirtyChai)
 
 const MONGOOSE_DB = require('../config').database
 const Patient = require('../config').Patient
+const Appointment = require('../config').Appointment
 
 const title =
 `
@@ -25,28 +26,46 @@ const pt1 = {
 }
 
 describe(title, () => {
+  // before((done) => {
+  //   MONGOOSE_DB.connection.dropDatabase(err => {
+  //     if (err) { console.log(err) }
+  //     done()
+  //   })
+  // })
   before((done) => {
     MONGOOSE_DB.connection.dropDatabase(err => {
       if (err) { console.log(err) }
-      done()
+      const ptCollection = Patient.find({})
+      const appCollection = Appointment.find({})
+      // Check that all the collections are empty
+      Promise.all([
+        ptCollection,
+        appCollection
+      ]).then((results) => {
+        results.forEach((result) => {
+          expect(result).to.be.deep.equal([])
+        })
+        done()
+      })
     })
   })
 
-  it('should be an empty "Patient" collection', (done) => {
-    // v1
-    Patient.find({}).exec((err, queryResult) => {
-      if (err) { console.log(err) }
-      // console.log(queryResult)
-      expect(queryResult).to.be.deep.equal([])
-      done()
-    })
-  })
+  // it('should be an empty "Patient" collection', (done) => {
+  //   // v1
+  //   Patient.find({}).exec((err, queryResult) => {
+  //     if (err) { console.log(err) }
+  //     // console.log(queryResult)
+  //     expect(queryResult).to.be.deep.equal([])
+  //     done()
+  //   })
+  // })
 
   it('should be able to enter a new patient', (done) => {
     const newPatient = new Patient(pt1)
     newPatient.save(function (err, ptDoc, numAff) {
       const ptObj = JSON.parse(JSON.stringify(ptDoc)) // hack, since ptDoc is a wrapper obj
       // console.log(ptObj)
+      // console.log(ptDoc)
       // console.log('===================')
       // console.log(err)
       // console.log(ptDoc)
@@ -54,7 +73,7 @@ describe(title, () => {
       // expect(err).to.be.a('null')
       assert.isNull(err, 'there should not be an error')
       expect(ptObj).to.have.all.keys([
-        '__v', 'first_name', 'last_name', 'email', 'password', '_id'
+        '__v', 'first_name', 'last_name', 'email', 'password', '_id', 'appointments'
       ])
       assert.strictEqual(numAff, 1, 'should only affect 1 doc')
       done()
@@ -63,9 +82,10 @@ describe(title, () => {
 
   it('should be able to find a patient given a username', (done) => {
     Patient.find({ username: pt1.username }).exec((err, results) => {
-      const ptResult = results[0]
+      const ptResultRaw = results[0]
+      const ptResult = JSON.parse(JSON.stringify(ptResultRaw)) // hack, since ptDoc is a wrapper obj
       if (err) { console.log(err) }
-      // console.log(result)
+      // console.log(ptResult)
       expect(ptResult).to.have.property('first_name', pt1.first_name)
       expect(ptResult).to.have.property('last_name', pt1.last_name)
       expect(ptResult).to.have.property('email', pt1.email)
@@ -88,6 +108,7 @@ describe(title, () => {
       }
     })
   })
+
   // it('should be able to find a patient with the username', (done) => {
   //   done()
   // })
