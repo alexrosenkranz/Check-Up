@@ -55,3 +55,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - some basic routes & queries for the patient collection
 ### Fixes
 - fixed hashPassword
+
+## [2.0.3] - 2017-04-27
+### Added
+- added appointmentSchema
