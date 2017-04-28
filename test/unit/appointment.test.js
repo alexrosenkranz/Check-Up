@@ -93,6 +93,8 @@ describe(title, () => {
         // let appTime = moment(app.appTime).format()
         // console.log(appTime)
         const app = JSON.parse(JSON.stringify(appRaw))
+        // console.log(app)
+        // console.log('-------------')
         expect(app).to.contain.all.keys(['_id', 'provider', 'notes', 'appTime'])
       })
       done()

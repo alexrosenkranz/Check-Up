@@ -1,12 +1,15 @@
 // const db = require('../db/models')
 const Patient = require('../models/patient')
 const Appointment = require('../models/appointment')
+const Provider = require('../models/provider')
 // const moment = require('moment')
 
 module.exports = {
   // ========== Patient Queries ========
   findAllPatients: () => {
-    return Patient.find({}).populate('appointments')
+    return Patient.find({})
+    .populate('appointments')
+    .populate('providers')
   },
   findPatientByUsername: (email) => {
     return Patient.find({ email }).populate('appointments')
@@ -42,7 +45,25 @@ module.exports = {
           })
       })
     })
-  } // ends addAppointment
+  }, // ends addAppointment
+
+  // ========== Appointment Queries ========
+  addProvider: (email, providerData) => {
+    return new Promise((resolve, reject) => {
+      const newProv = new Provider(providerData)
+      newProv.save(function (err, provDoc, numAff) {
+        if (err) { return reject(err) }
+        Patient.findOneAndUpdate(
+          { email },
+          { $push: { providers: provDoc._id } },
+          { new: true },
+          function (err, ptDoc) {
+            if (err) { return reject(err) }
+            resolve(ptDoc)
+          })
+      }) // closes .save
+    }) // closes promise
+  }
 
 } // end of module.exports
 
