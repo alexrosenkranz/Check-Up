@@ -73,7 +73,7 @@ describe(title, () => {
       // expect(err).to.be.a('null')
       assert.isNull(err, 'there should not be an error')
       expect(ptObj).to.have.all.keys([
-        '__v', 'first_name', 'last_name', 'email', 'password', '_id', 'appointments'
+        '__v', 'first_name', 'last_name', 'email', 'password', '_id', 'appointments', 'providers'
       ])
       assert.strictEqual(numAff, 1, 'should only affect 1 doc')
       done()

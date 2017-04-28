@@ -22,3 +22,4 @@ module.exports.database = mongoose
 // load models
 module.exports.Patient = require('../server/models/patient')
 module.exports.Appointment = require('../server/models/appointment')
+module.exports.Provider = require('../server/models/provider')
