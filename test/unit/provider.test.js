@@ -61,7 +61,21 @@ describe(title, () => {
 
   it('should be able to enter a new provider', (done) => {
     Query.addProvider(pt1.email, provider1).then((result) => {
-      console.log(result)
+      // console.log(result)
+      expect(result.providers).to.have.lengthOf(1)
+      done()
+    })
+  })
+
+  it('should be able to find providers for a given patient', (done) => {
+    Query.findAllPatients().then((results) => {
+      const pt1Result = results[0]
+      const providers = pt1Result.providers
+      providers.forEach((providerRaw) => {
+        let provider = JSON.parse(JSON.stringify(providerRaw))
+        // console.log(providerRaw)
+        expect(provider).to.contain.all.keys(['first_name', 'last_name', 'address', 'specialty', '_id', '__v'])
+      })
       done()
     })
   })

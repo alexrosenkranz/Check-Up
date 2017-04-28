@@ -7,7 +7,9 @@ const Provider = require('../models/provider')
 module.exports = {
   // ========== Patient Queries ========
   findAllPatients: () => {
-    return Patient.find({}).populate('appointments')
+    return Patient.find({})
+    .populate('appointments')
+    .populate('providers')
   },
   findPatientByUsername: (email) => {
     return Patient.find({ email }).populate('appointments')

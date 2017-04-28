@@ -59,3 +59,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.0.3] - 2017-04-27
 ### Added
 - added appointmentSchema
+
+## [2.0.4] - 2017-04-27
+### Added
+- added providerSchema, and basic unit test
