@@ -23,14 +23,15 @@ import {
 } from 'native-base'
 import Expo, {Constants} from 'expo';
 import Main from '../Main'
+import {_signUp} from '../../lib/apiService'
 
 
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       gender: '-',
       email: '',
       phoneNumber: '',
@@ -39,10 +40,16 @@ export default class SignIn extends React.Component {
   }
 
   _signUpButton = () => {
-    this.props.navigator.push({
-      name: 'Dashboard',
-      userInfo: this.state
-  })
+    
+    _signUp(this.state).then((user) => {
+      console.log(user)
+        this.props.navigator.push({
+          name: 'Dashboard',
+          userInfo: user
+      })
+    }) 
+   
+   
   }
 
   render() {
@@ -67,11 +74,11 @@ export default class SignIn extends React.Component {
           <Text>Enter your information below and let's get started!{'\n'}</Text>
           <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
             <Label>First Name</Label>
-            <Input onChangeText={(text) => this.setState({firstName: text})} />
+            <Input onChangeText={(text) => this.setState({first_name: text})} />
           </Item>
           <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
             <Label>Last Name</Label>
-            <Input onChangeText={(text) => this.setState({lastName: text})} />
+            <Input onChangeText={(text) => this.setState({last_name: text})} />
           </Item>
          
           <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
