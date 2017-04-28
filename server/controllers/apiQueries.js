@@ -2,6 +2,7 @@
 const Patient = require('../models/patient')
 const Appointment = require('../models/appointment')
 const Provider = require('../models/provider')
+// const Medication = require('../models/medication')
 // const moment = require('moment')
 
 module.exports = {
