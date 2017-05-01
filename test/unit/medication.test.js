@@ -8,11 +8,11 @@ chai.use(dirtyChai)
 
 const moment = require('moment')
 
-// const cleanDatabase = require('../cleanDatabase').cleanDatabase
 const MONGOOSE_DB = require('../config').database
 const Patient = require('../config').Patient
 const Appointment = require('../config').Appointment
 const Provider = require('../config').Provider
+const Medication = require('../config').Medication
 const Query = require('../../server/controllers/apiQueries')
 const title =
 `
@@ -28,17 +28,13 @@ const pt1 = {
   email: 'johndoe@gmail.com',
   password: 'superSecret'
 }
-
-const app1 = {
-  appTime: moment().set({'month': 0, 'date': 1}).toISOString(),
-  provider: 'Dr. Suess',
-  notes: 'Working on my rhymes'
-}
-
-const app2 = {
-  appTime: moment().set({'month': 2, 'date': 6}).toISOString(),
-  provider: 'Dr. Carson',
-  notes: 'Dont fall asleep'
+const med1 = {
+  drug_name: 'aspirin',
+  doage: '75 milligrams',
+  frequency: 'Once a day',
+  directions: '',
+  starting_date: moment().set({'month': 4, 'date': 1}).toISOString(),
+  ending_date: moment().set({'month': 4, 'date': 7}).toISOString(),
 }
 
 describe(title, () => {
@@ -48,11 +44,13 @@ describe(title, () => {
       const ptCollection = Patient.find({})
       const appCollection = Appointment.find({})
       const providerCollection = Provider.find({})
+      const medicationCollection = Medication.find({})
       // Check that all the collections are empty
       Promise.all([
         ptCollection,
         appCollection,
-        providerCollection
+        providerCollection,
+        medicationCollection
       ]).then((results) => {
         results.forEach((result) => {
           expect(result).to.be.deep.equal([])
@@ -81,41 +79,30 @@ describe(title, () => {
     })
   })
 
-  it('should let me make a new appointment', (done) => {
-    Query.addAppointment(pt1.email, app1).then((result) => {
-      // console.log(result)
-      expect(result.appointments).to.be.a('array')
-      expect(result.appointments).to.have.lengthOf(1)
+  it('should be able to add a medication to a given patient', (done) => {
+    Query.addMedication(pt1.email, med1).then((result) => {
+      expect(result.medications).to.be.a('array')
+      expect(result.medications).to.have.lengthOf(1)
       done()
     })
   })
 
-  it('should be able to add another appointment', (done) => {
-    Query.addAppointment(pt1.email, app2).then((result) => {
-      // console.log(result)
-      expect(result.appointments).to.be.a('array')
-      expect(result.appointments).to.have.lengthOf(2)
+  it('should be able to find the medication entered for a given patient', (done) => {
+    Query.findPatientByEmail(pt1.email).then((result) => {
+      console.log(result)
       done()
     })
+  })
+  // TO DO
+  it('should be able to find read all the keys of the medication', (done) => {
+    done()
+  })
+  it('should be able to convert the starting date and ending date in readable human form', (done) => {
+    done()
   })
 
-  it('should be able to find the appointments add for a user', (done) => {
-    Query.findAllPatients().then((results) => {
-      const pt1Result = results[0]
-      const appPt1 = pt1Result.appointments
-      expect(appPt1).to.be.a('array')
-      expect(appPt1).to.have.lengthOf(2)
-      appPt1.forEach((appRaw) => {
-        // console.log(app)
-        // let appTime = moment(app.appTime).format()
-        // console.log(appTime)
-        const app = JSON.parse(JSON.stringify(appRaw))
-        // console.log(app)
-        // console.log('-------------')
-        expect(app).to.contain.all.keys(['_id', 'provider', 'notes', 'appTime'])
-      })
-      done()
-    })
-  })
-  // ends all its
+  // it('should be able to add a medication to a given patient', (done) => {
+  //   done()
+  // })
 })
+

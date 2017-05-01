@@ -64,16 +64,9 @@ describe(title, () => {
     const newPatient = new Patient(pt1)
     newPatient.save(function (err, ptDoc, numAff) {
       const ptObj = JSON.parse(JSON.stringify(ptDoc)) // hack, since ptDoc is a wrapper obj
-      // console.log(ptObj)
-      // console.log(ptDoc)
-      // console.log('===================')
-      // console.log(err)
-      // console.log(ptDoc)
-      // console.log(numAff)
-      // expect(err).to.be.a('null')
       assert.isNull(err, 'there should not be an error')
       expect(ptObj).to.have.all.keys([
-        '__v', 'first_name', 'last_name', 'email', 'password', '_id', 'appointments', 'providers'
+        '__v', 'first_name', 'last_name', 'email', 'password', '_id', 'appointments', 'providers', 'medications'
       ])
       assert.strictEqual(numAff, 1, 'should only affect 1 doc')
       done()
@@ -113,4 +106,3 @@ describe(title, () => {
   //   done()
   // })
 })
-

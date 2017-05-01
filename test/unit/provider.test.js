@@ -59,6 +59,20 @@ describe(title, () => {
     })
   })
 
+  // checks to make sure that Patient was entered properly. Could have put in before
+  it('should be able to find a patient given a username', (done) => {
+    Patient.find({ username: pt1.username }).exec((err, results) => {
+      const ptResultRaw = results[0]
+      const ptResult = JSON.parse(JSON.stringify(ptResultRaw)) // hack, since ptDoc is a wrapper obj
+      if (err) { console.log(err) }
+      // console.log(ptResult)
+      expect(ptResult).to.have.property('first_name', pt1.first_name)
+      expect(ptResult).to.have.property('last_name', pt1.last_name)
+      expect(ptResult).to.have.property('email', pt1.email)
+      done()
+    })
+  })
+
   it('should be able to enter a new provider', (done) => {
     Query.addProvider(pt1.email, provider1).then((result) => {
       // console.log(result)
@@ -81,4 +95,3 @@ describe(title, () => {
   })
   // ---- end of its ----
 })
-

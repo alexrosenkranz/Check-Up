@@ -43,6 +43,12 @@ router.post('/new-patient', (req, res) => {
   })
 })
 
+/** ======  add providers + appointments etc Queries ==========
+ *
+ */
+// router.post('/new-appointment', (req, res) => {
+
+// })
 
 // /** ======  Providers Queries ==========
 //  * GET api/v1/providers --> returns all providers info
