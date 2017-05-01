@@ -65,9 +65,9 @@ componentDidMount = () => {
           <Right/>
         </Header>
         <Content padder>
-          <Text>Enter your information below and let's get started!{'\n'}</Text>
+          <Text>Enter your appointment information.{'\n'}</Text>
           <Item style={styles.item}  floatingLabel>
-            <Label>First Name</Label>
+            <Label>Appointment Date</Label>
             <Input onChangeText={(text) => this.setState({first_name: text})} />
           </Item>
           <Item style={styles.item}  floatingLabel>
