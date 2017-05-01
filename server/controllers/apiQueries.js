@@ -11,8 +11,8 @@ module.exports = {
     .populate('appointments')
     .populate('providers')
   },
-  findPatientByUsername: (email) => {
-    return Patient.find({ email }).populate('appointments')
+  findPatientByEmail: (email) => {
+    return Patient.findOne({ email }).populate('appointments')
   },
   findPatientById: (_id) => {
     return Patient.find({ _id }).populate('appointments')
