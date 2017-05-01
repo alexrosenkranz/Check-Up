@@ -23,3 +23,4 @@ module.exports.database = mongoose
 module.exports.Patient = require('../server/models/patient')
 module.exports.Appointment = require('../server/models/appointment')
 module.exports.Provider = require('../server/models/provider')
+module.exports.Medication = require('../server/models/medication')

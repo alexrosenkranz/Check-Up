@@ -2,6 +2,8 @@
 const Patient = require('../models/patient')
 const Appointment = require('../models/appointment')
 const Provider = require('../models/provider')
+const Medication = require('../models/medication')
+// const Medication = require('../models/medication')
 // const moment = require('moment')
 
 module.exports = {
@@ -10,9 +12,13 @@ module.exports = {
     return Patient.find({})
     .populate('appointments')
     .populate('providers')
+    .populate('medications')
   },
-  findPatientByUsername: (email) => {
-    return Patient.find({ email }).populate('appointments')
+  findPatientByEmail: (email) => {
+    return Patient.findOne({ email })
+    .populate('appointments')
+    .populate('providers')
+    .populate('medications')
   },
   findPatientById: (_id) => {
     return Patient.find({ _id }).populate('appointments')
@@ -42,7 +48,8 @@ module.exports = {
           function (err, doc) {
             if (err) { return reject(err) }
             resolve(doc)
-          })
+          }
+        )
       })
     })
   }, // ends addAppointment
@@ -60,11 +67,30 @@ module.exports = {
           function (err, ptDoc) {
             if (err) { return reject(err) }
             resolve(ptDoc)
-          })
+          }
+        )
       }) // closes .save
     }) // closes promise
-  }
+  },
 
+  // ========== Medicaiton Queries ========
+  addMedication: (email, medData) => {
+    return new Promise((resolve, reject) => {
+      const newMed = new Medication(medData)
+      newMed.save(function (err, medDoc, numAff) {
+        if (err) { return reject(err) }
+        Patient.findOneAndUpdate(
+          { email },
+          { $push: { medications: medDoc._id } },
+          { new: true },
+          function (err, doc) {
+            if (err) { return reject(err) }
+            resolve(doc)
+          }
+        )
+      })
+    })
+  }
 } // end of module.exports
 
 // module.exports = {

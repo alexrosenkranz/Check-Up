@@ -43,7 +43,6 @@
 //     })
 //   })
 
-
 //   it('should be an empty "Patient" collection', (done) => {
 //     Patient.find({}).exec((err, queryResult) => {
 //       if (err) { console.log(err) }
@@ -52,4 +51,3 @@
 //     })
 //   })
 // })
-
