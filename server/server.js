@@ -1,6 +1,8 @@
 // App dependencies ---------------------------- /
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const parseTokenCookie = require('./auth/parseTokenCookie')
 const morgan = require('morgan')
 require('dotenv').load()
 const path = require('path')
@@ -15,6 +17,8 @@ app.use(express.static(path.join(__dirname, '/..', '/browserClient/dist')))
 
 // App middleware ------------------------------ /
 app.use(morgan('dev')) // for logging
+app.use(cookieParser())
+app.use(parseTokenCookie())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -22,6 +26,7 @@ app.use(bodyParser.json())
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'))
 })
+app.use('/auth', require('./controllers/authRouter'))
 app.use('/api/v2', require('./controllers/apiRouter'))
 
 // Start server ---------------------------------- /
