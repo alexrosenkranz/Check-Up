@@ -42,16 +42,13 @@ router.post('/new-patient', (req, res) => {
   })
 })
 
-router.post('/new-appointment', (req, res) => {
-  const { date, time, provider, location, notes } = req.body
-  const ptData = { email, first_name, last_name, password }
-  Query.addAppointment(ptData).then((result) => {
-    res.json(result)
-  }).catch((err) => {
-    res.json(err)
-  })
-})
 
+/** ======  add providers + appointments etc Queries ==========
+ *
+ */
+// router.post('/new-appointment', (req, res) => {
+
+// })
 
 // /** ======  Providers Queries ==========
 //  * GET api/v1/providers --> returns all providers info
