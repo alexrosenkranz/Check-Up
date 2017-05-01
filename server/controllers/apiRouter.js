@@ -21,7 +21,8 @@ router.get('/all-patients', (req, res) => {
 })
 
 router.get('/patient/username/:email', (req, res) => {
-  Query.findPatientByUsername(req.params.email).then((result) => {
+  Query.findPatientByEmail(req.params.email).then((result) => {
+    console.log(result)
     return res.json(result)
   })
 })

@@ -18,9 +18,11 @@ export default class SignIn extends React.Component {
   componentDidMount = () => {
     let userInfo = this.props.userInfo
     
-    let userEmail = userInfo ? userInfo.email : 'Alex.rosenkranz@gmail.com'    
+    let userEmail = userInfo ? userInfo.email : 'alex.rosenkranz@gmail.com'    
     _getUser(userEmail).then((user) => {
-      this.setState({userInfo: user[0]})
+
+      if (user) this.setState({userInfo: user})
+
     })
   }
 

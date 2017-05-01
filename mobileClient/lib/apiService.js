@@ -3,7 +3,9 @@ const apiUrl = "http://localhost:3001/api/v2"
 // GET RID OF BEFORE LAUNCH!!!!
 export const _getUser = (email) => {
   console.log(email)
-  return fetch(`${apiUrl}/patient/username/${email}`).then(res => res.json())
+  return fetch(`${apiUrl}/patient/username/${email}`).then(res => res.json()).catch((err) => {
+    console.log(err.message)
+  })
 }
 
 export const _signUp = (username) => {

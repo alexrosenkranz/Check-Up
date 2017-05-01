@@ -81,7 +81,7 @@ export default class SignIn extends React.Component {
          
           <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
             <Label>Email</Label>
-            <Input onChangeText={(text) => this.setState({email: text})} />
+            <Input onChangeText={(text) => this.setState({email: text.toLowerCase()})} />
           </Item>
           
           <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
