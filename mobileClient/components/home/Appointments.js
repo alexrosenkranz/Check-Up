@@ -55,7 +55,7 @@ export default class AppointmentsHome extends Component {
   render() {
     return (
       <Content style={{ padding: 10}}>
-          <H1>Upcoming Appointments for {this.props.firstName}</H1>
+          <Text>Upcoming Appointments for {this.props.userInfo.first_name}</Text>
           <ListView
           dataSource={this.state.appointments}
           renderRow={(appt) => 
@@ -93,6 +93,3 @@ const styles = {
   }
 }
 
-AppointmentsHome.propTypes = {
-  firstName: React.PropTypes.string,
-}

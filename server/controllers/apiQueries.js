@@ -47,7 +47,7 @@ module.exports = {
     })
   }, // ends addAppointment
 
-  // ========== Appointment Queries ========
+  // ========== Provider Queries ========
   addProvider: (email, providerData) => {
     return new Promise((resolve, reject) => {
       const newProv = new Provider(providerData)

@@ -3,19 +3,32 @@ import { View, StyleSheet, Navigator } from 'react-native'
 import { Container, Content, Form, Item, Input, Label, Button, Text, H1, H2, H3} from 'native-base'
 import { Constants } from 'expo'; 
 import Main from '../Main'
+import {_getUser} from '../../lib/apiService'
 
 export default class SignIn extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      userInfo: ""
     }
   }
 
+  componentDidMount = () => {
+    let userInfo = this.props.userInfo
+    
+    let userEmail = userInfo ? userInfo.email : 'Alex.rosenkranz@gmail.com'    
+    _getUser(userEmail).then((user) => {
+      this.setState({userInfo: user[0]})
+    })
+  }
+
+
   _signInButton = () => {
     this.props.navigator.push({
-		  name: 'Dashboard'
+		  name: 'Dashboard',
+      userInfo: this.state.userInfo
 		})
   }
 
@@ -24,6 +37,7 @@ export default class SignIn extends React.Component {
       name: 'SignUp'
     })
   }
+
 
   render() {
     return (

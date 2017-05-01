@@ -2,6 +2,7 @@ import React from 'react'
 import { Platform, StyleSheet, Text, View, Navigator } from 'react-native'
 import SignIn from './components/signin/SignIn'
 import SignUp from './components/signin/SignUp'
+import AddAppt from './components/appointments/AddAppt'
 import Main from './components/Main'
 import SideBar from './components/Sidebar';
 import {
@@ -30,6 +31,9 @@ export default class App extends React.Component {
     }
     if (route.name == 'SignUp') {
       return <SignUp refs={this.refs} navigator={navigator}  />
+    }
+    if (route.name == 'AddAppt') {
+      return <AddAppt refs={this.refs} navigator={navigator} userInfo={route.userInfo} />
     }
   }
 async componentWillMount() {

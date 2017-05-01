@@ -11,18 +11,24 @@ export default class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      userInfo: '',
-      firstName: 'Alex'
+      userInfo: ''
     }
   }
 
   componentDidMount = () => {
     let userInfo = this.props.userInfo
 
+    if (userInfo) {
     this.setState({userInfo})
+  } 
   }
 
-
+  _addAppt = () => {
+    this.props.navigator.push({
+      name: 'AddAppt',
+      userInfo: this.state.userInfo
+    })
+  }
 
 
   render() {
@@ -42,10 +48,10 @@ export default class Main extends Component {
         </Header>
         <Content style={{flex:1}}>
         <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
-        <Appointments firstName={this.state.userInfo.first_name} />
+        <Appointments userInfo={this.state.userInfo} />
         </Content>
         <Content style={{flex: 1}}>
-        <Button full style={{flex: 2}}><Text>Add Appointment</Text></Button>
+        <Button full style={{flex: 2}} onPress={this._addAppt.bind(this)}><Text>Add Appointment</Text></Button>
         <Button full><Text>Add Appointment</Text></Button>
           </Content>
         </Content>
