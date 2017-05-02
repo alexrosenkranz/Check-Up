@@ -30,7 +30,7 @@ module.exports = function (contBool) {
           exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in 1 hour
         }
         // 3b. sign the token
-        const token = jwt.sign(payload, process.env.JWT_SECRET)
+        const token = jwt.sign(payload, process.env.JWT_PASSPHRASE)
         // 3c. make a cookie for the res
         res.cookie('token', token, { httpOnly: true })
         // check to see to keep going or not

@@ -30,9 +30,11 @@ router.get('/patient/username/:email', (req, res) => {
   })
 })
 
-router.get('/patient/id/:_id', (req, res) => {
-  Query.findPatientById(req.params._id).then((result) => {
-    return res.json(result)
+router.get('/patient/id', (req, res) => {
+  let userId = req.user._id
+  Query.findPatientById(userId).then((result) => {
+    let userResult = result[0]
+    return res.json(userResult)
   })
 })
 

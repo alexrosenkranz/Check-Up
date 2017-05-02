@@ -26,15 +26,16 @@ export const _signUp = (username) => {
 }
 
 export const _getPatient = (token) => {
-  return fetch(`${apiUrl}/patient/id/:_id`, {
-    method: 'POST',
+  return fetch(`${apiUrl}/patient/id`, {
+    method: 'GET',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
       'token': token
-    },
-    body: JSON.stringify(username)
+    }
   }).then(res => res.json())
+  .then(res => {
+    console.log(res)
+    res.json()
+  })
 }
 
 
