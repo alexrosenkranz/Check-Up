@@ -1,6 +1,7 @@
 node_modules
 browserClient/node_modules/
 mobileClient/node_modules/
+mobileClient/.DS_Store
 npm-debug.log
 yarn.lock
 .env
