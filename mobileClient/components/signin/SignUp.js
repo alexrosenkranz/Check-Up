@@ -1,60 +1,79 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Navigator, ScrollView } from 'react-native'
 import moment from 'moment'
-import {
-  Container,
-  Content,
-  Header,
-  Body,
-  Form,
-  Item,
-  Input, 
-  Label,
-  Picker,
-  Button,
-  Text,
-  Left,
-  Title,
-  Right,
-  Icon,
-  H1,
-  H2,
-  H3
-} from 'native-base'
+import { Container, Content, Header, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
 import Expo, {Constants} from 'expo';
 import Main from '../Main'
 import {_signUp} from '../../lib/apiService'
+
+
+const t = require('tcomb-form-native')
+const templates = require('tcomb-form-native/lib/templates/bootstrap')
+
+
+const Form = t.form.Form
+t.form.Form.templates = templates;
+
+
+const signUp = t.struct({
+  first_name: t.String,
+  last_name: t.String,
+  email: t.String,
+  password:  t.String
+})
+
+const options = {
+  fields: {
+    email: {
+      autoCapitalize: 'none',
+      autoCorrect: false,
+      error: 'Please enter a correct email.'
+    },
+    password: {
+      autoCapitalize: 'none',
+      password: true,
+      secureTextEntry: true,
+      autoCorrect: false,
+      error: 'Please enter a correct password.'
+    }
+  }
+}
 
 
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      first_name: '',
-      last_name: '',
-      gender: '-',
-      email: '',
-      password: ''
+      values: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: ''
+      }
     }
   }
 
   _signUpButton = () => {
-    _signUp(this.state).then((user) => {
+    _signUp(this.state.value).then((user) => {
       console.log(user)
+      
+      if (!user.code) {
         this.props.navigator.push({
           name: 'SignIn',
           userInfo: user
-      })
-    }) 
-   
-   
+        })
+      } else {
+        alert('This email is already in use!')
+      }
+    })
+  }
+
+   _onChange = (value) => {
+    this.setState({value})
   }
 
   render() {
     
-    const nativeItem= Picker.Item
-
-
     return (
       <Container style={{paddingTop: Constants.statusBarHeight}}>
         <Header>
@@ -70,39 +89,13 @@ export default class SignIn extends React.Component {
         </Header>
         <Content padder>
           <Text>Enter your information below and let's get started!{'\n'}</Text>
-          <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
-            <Label>First Name</Label>
-            <Input onChangeText={(text) => this.setState({first_name: text})} />
-          </Item>
-          <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
-            <Label>Last Name</Label>
-            <Input onChangeText={(text) => this.setState({last_name: text})} />
-          </Item>
-         
-          <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
-            <Label>Email</Label>
-            <Input onChangeText={(text) => this.setState({email: text.toLowerCase()})} />
-          </Item>
-          
-          <Item style={{marginBottom: 2 + '%'}}  floatingLabel>
-            <Label>Password</Label>
-            <Input secureTextEntry={true}  onChangeText={(password) => this.setState({password: password})} />
-          </Item>
-          <Item style={{marginBottom: 2 + '%'}} stacked>
-          <Label>Gender</Label>
-            <Picker
-                placeholder="Pick One"
-                iosHeader="Select one"
-                mode="dropdown"
-                selectedValue={this.state.gender}
-                onValueChange={(gender) => this.setState({gender: gender})}>
-                <nativeItem label="Pick One" value="-" />
-                <nativeItem label="Female" value="Female" />
-                <nativeItem label="Male" value="Male" />
-                <nativeItem label="Transgender" value="Transgender" />
-                <nativeItem label="I prefer not to identify." value="N/A" />
-            </Picker>
-          </Item>
+          <Form
+              ref='form'
+              type={signUp}
+              options={options}
+              value={this.state.value}
+              onChange={this._onChange}
+            />
 
           <Text></Text>
           

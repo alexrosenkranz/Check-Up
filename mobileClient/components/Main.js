@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { AsyncStorage, View, StyleSheet, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
 
-import { Container, Title,Header, Content, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
+import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
 
 import Appointments from './home/Appointments'
-import SideBar from './Sidebar';
+import SideBar from './Sidebar'
+import {_getPatient} from '../lib/apiService'
 
 export default class Main extends Component {
   constructor(props) {
@@ -14,15 +15,17 @@ export default class Main extends Component {
       userInfo: '',
       isLoading: true
     }
+    this._userLogout = this._userLogout.bind(this)
   }
 
-  // componentDidMount = () => {
-  //   let userInfo = this.props.userInfo
-
-  //   if (userInfo) {
-  //   this.setState({userInfo})
-  // } 
-  // }
+async _userLogout() {
+  try {
+    await AsyncStorage.removeItem('access_token');
+    alert("Logout Success!")
+  } catch (error) {
+    console.log('AsyncStorage error: ' + error.message);
+  }
+}
 
   _addAppt = () => {
     this.props.navigator.push({
@@ -36,8 +39,19 @@ export default class Main extends Component {
       console.log(token)
       this.setState({
         isLoading: false
-      });
+      })
+      _getPatient(token)
+      .then((res) => console.log(res))
     });
+  }
+
+  _signOut = () => {
+    this._userLogout()
+    .then(() => {
+      this.props.navigator.push({
+        name:'SignIn'
+      })
+    })
   }
 
 
@@ -68,6 +82,9 @@ export default class Main extends Component {
         <Button full><Text>Add Appointment</Text></Button>
           </Content>
         </Content>
+        <Footer>
+        <Button full onPress={this._signOut.bind(this)}><Text>Sign Out</Text></Button>
+        </Footer>
       </Container>
     )
   }

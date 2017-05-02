@@ -2,8 +2,6 @@ const apiUrl = "http://localhost:3001/api/v2"
 const authUrl = "http://localhost:3001/auth"
 
 export const _signIn = (email, password) => {
-  console.log(email)
-  console.log(password)
   let signInCreds = {email, password}
   return fetch(`${authUrl}/login`, {
     method: 'POST',
@@ -27,13 +25,27 @@ export const _signUp = (username) => {
   }).then(res => res.json())
 }
 
-export const _addAppointment = (username) => {
+export const _getPatient = (token) => {
+  return fetch(`${apiUrl}/patient/id/:_id`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'token': token
+    },
+    body: JSON.stringify(username)
+  }).then(res => res.json())
+}
+
+
+export const _addAppointment = (username, token) => {
   console.log(username)
   return fetch(`${apiUrl}/new-appointment`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'token': token
     },
     body: JSON.stringify(username)
   }).then(res => res.json())

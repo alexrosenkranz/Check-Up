@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {AsyncStorage, View, StyleSheet, Navigator } from 'react-native'
+import {AsyncStorage, View, StyleSheet, Navigator, Image } from 'react-native'
 import { Container, Content, Button, Text, H1, H2, H3} from 'native-base'
 import { Constants } from 'expo'; 
 import Main from '../Main'
@@ -22,12 +22,15 @@ const options = {
   fields: {
     email: {
       autoCapitalize: 'none',
-      autoCorrect: false
+      autoCorrect: false,
+      error: 'Please enter a correct email.'
     },
     password: {
       autoCapitalize: 'none',
       password: true,
-      autoCorrect: false
+      secureTextEntry: true,
+      autoCorrect: false,
+      error: 'Please enter a correct password.'
     }
   }
 }
@@ -69,11 +72,15 @@ export default class SignIn extends React.Component {
     
     _signIn(this.state.value.email, this.state.value.password)
     .then((responseData) => {
-      this._onValueChange('access_token', responseData.token)
-    }).then(() => {
+      if (responseData.token) {
+        this._onValueChange('access_token', responseData.token).then(() => {
         this.props.navigator.push({
         name: 'Dashboard'
       })
+    })
+      } else {
+        return alert(responseData.msg)
+      }
     })
     .catch((err) => {alert(err)})
     .done()
@@ -93,10 +100,10 @@ export default class SignIn extends React.Component {
   render() {
     
     return (
-      <Container style={styles.container}>
+      <Image source={require('../../images/bg.png')} style={styles.container}>
         <Content padder style={styles.inner}>
         
-          <H1 style={{textAlign: 'center'}}>Check Up!</H1>
+          <H1 style={styles.centered}>Check Up!</H1>
           <Text>{'\n'}</Text>
       
             <Form
@@ -111,10 +118,9 @@ export default class SignIn extends React.Component {
               <Text>Sign In</Text>
             </Button>
           
-            <Text>{'\n'}Forgot your login?{'\n'}</Text>
-            <Text onPress={this._signUp}>Not a user? Sign up here.{'\n'}</Text>
+            <Text style={styles.centered} onPress={this._signUp}>{'\n'}Not a user? Sign up here.{'\n'}</Text>
         </Content>
-      </Container>
+      </Image>
     )
   }
 }
@@ -126,10 +132,16 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   }, 
   inner: {
     width: 95 + '%',
+    flex: 1,
+    overflow: 'visible',
+    backgroundColor: 'rgba(255,255,255,0.6)'
+  },
+  centered: {
+    textAlign: 'center'
   }
 }
 
