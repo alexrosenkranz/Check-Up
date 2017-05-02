@@ -2,7 +2,8 @@
     "extends": "standard",
     "plugins": [
         "standard",
-        "promise"
+        "promise",
+        "react"
     ],
    "parserOptions": {
         "ecmaVersion": 6

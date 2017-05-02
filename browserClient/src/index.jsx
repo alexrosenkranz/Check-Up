@@ -1,15 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import TestApi from './components/TestApi'
-// import './index.css'
-
-// const testElement = (
-//   <div>
-//     <h1>hello world</h1>
-//   </div>
-// )
+import { BrowserRouter } from 'react-router-dom'
+import App from './components/App/App'
 
 ReactDOM.render(
-  <TestApi />,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('root')
 )
