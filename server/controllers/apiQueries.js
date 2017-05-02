@@ -21,7 +21,10 @@ module.exports = {
     .populate('medications')
   },
   findPatientById: (_id) => {
-    return Patient.find({ _id }).populate('appointments')
+    return Patient.find({ _id })
+    .populate('appointments')
+    .populate('providers')
+    .populate('medications')
   },
   addPatient: (ptData) => {
     return new Promise((resolve, reject) => {
@@ -54,7 +57,7 @@ module.exports = {
     })
   }, // ends addAppointment
 
-  // ========== Appointment Queries ========
+  // ========== Provider Queries ========
   addProvider: (email, providerData) => {
     return new Promise((resolve, reject) => {
       const newProv = new Provider(providerData)

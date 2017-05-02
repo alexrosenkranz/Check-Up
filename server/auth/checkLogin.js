@@ -37,6 +37,7 @@ module.exports = function (contBool) {
         if (callNext) {
           next()
         } else {
+          console.log(token)
           return res.json({ token })
         }
       }
