@@ -33,11 +33,9 @@ export const _getPatient = (token) => {
       'Content-Type': 'application/json',
       'token': token
     }
-  }).then(res => res.json())
-  .then(res => {
-    console.log(res)
-    // res.json(userRes)
-  }).catch((err) => {
+  })
+  .then(res => res.json())
+  .catch((err) => {
     console.log(err)
   })
 }

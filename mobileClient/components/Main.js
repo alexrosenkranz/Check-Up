@@ -36,14 +36,17 @@ async _userLogout() {
 
    componentWillMount() {
     AsyncStorage.getItem('access_token').then((token) => {
-      this.setState({
-        isLoading: false
-      })
+      
       _getPatient(token)
-      .then((result) => {
-        console.log(result)
+        .then((result) => {
+          console.log(result)
+          this.setState({userInfo: result})
+        }).then(() => {
+          this.setState({
+          isLoading: false
+        })
       })
-    });
+    })
   }
 
   _signOut = () => {
