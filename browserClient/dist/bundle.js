@@ -10245,7 +10245,7 @@ var TestApi = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      _axios2.default.get('/api/v1/all-patients').then(function (response) {
+      _axios2.default.get('/api/v2/all-patients').then(function (response) {
         _this2.setState({
           patients: response.data
         });
@@ -25681,4 +25681,3 @@ module.exports = g;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=bundle.js.map

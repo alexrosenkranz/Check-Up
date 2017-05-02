@@ -13,7 +13,8 @@
     "lint:server": "node_modules/.bin/eslint --fix server/",
     "lint:test": "node_modules/.bin/eslint --fix test/",
     "bundle": "./node_modules/.bin/webpack --config 'webpack-dev.config.js'",
-    "prod-server": "npm run prod-build; node server/server"
+    "bundle-prod": "./node_modules/.bin/webpack --config 'webpack-prod.config.js'",
+    "prod-server": "node server/server"
   },
   "repository": {
     "type": "git",
