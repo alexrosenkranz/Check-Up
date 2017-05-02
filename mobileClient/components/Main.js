@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Navigator, Text } from 'react-native'
+import { AsyncStorage, View, StyleSheet, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
 
 import { Container, Title,Header, Content, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
@@ -11,17 +11,18 @@ export default class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      userInfo: ''
+      userInfo: '',
+      isLoading: true
     }
   }
 
-  componentDidMount = () => {
-    let userInfo = this.props.userInfo
+  // componentDidMount = () => {
+  //   let userInfo = this.props.userInfo
 
-    if (userInfo) {
-    this.setState({userInfo})
-  } 
-  }
+  //   if (userInfo) {
+  //   this.setState({userInfo})
+  // } 
+  // }
 
   _addAppt = () => {
     this.props.navigator.push({
@@ -30,8 +31,20 @@ export default class Main extends Component {
     })
   }
 
+   componentWillMount() {
+    AsyncStorage.getItem('access_token').then((token) => {
+      console.log(token)
+      this.setState({
+        isLoading: false
+      });
+    });
+  }
+
 
   render() {
+    if (this.state.isLoading) {
+      return <View><Text>Loading...</Text></View>;
+    }
         
     return (
       <Container style={styles.container}>

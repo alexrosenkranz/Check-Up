@@ -1,37 +1,82 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Navigator } from 'react-native'
-import { Container, Content, Form, Item, Input, Label, Button, Text, H1, H2, H3} from 'native-base'
+import {AsyncStorage, View, StyleSheet, Navigator } from 'react-native'
+import { Container, Content, Button, Text, H1, H2, H3} from 'native-base'
 import { Constants } from 'expo'; 
 import Main from '../Main'
-import {_getUser} from '../../lib/apiService'
+import {_signIn} from '../../lib/apiService'
+
+const t = require('tcomb-form-native')
+const templates = require('tcomb-form-native/lib/templates/bootstrap')
+
+
+const Form = t.form.Form
+t.form.Form.templates = templates;
+
+
+const signIn = t.struct({
+  email: t.String,
+  password:  t.String
+})
+
+const options = {
+  fields: {
+    email: {
+      autoCapitalize: 'none',
+      autoCorrect: false
+    },
+    password: {
+      autoCapitalize: 'none',
+      password: true,
+      autoCorrect: false
+    }
+  }
+}
+
 
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      email: "",
-      password: "",
-      userInfo: ""
+      value: {
+        email: '',
+        password: ''
+      }    
+    }
+
+    this._onValueChange= this._onValueChange.bind(this)
+  }
+
+
+  componentWillMount() {
+      AsyncStorage.getItem('access_token').then((token) => {
+        console.log(token)
+        this.setState({
+          isLoading: false
+        });
+      });
+    }
+
+
+   async _onValueChange(item, selectedValue) {
+    try {
+      await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
     }
   }
 
-  componentDidMount = () => {
-    let userInfo = this.props.userInfo
-    
-    let userEmail = userInfo ? userInfo.email : 'alex.rosenkranz@gmail.com'    
-    _getUser(userEmail).then((user) => {
-
-      if (user) this.setState({userInfo: user})
-
-    })
-  }
-
-
   _signInButton = () => {
-    this.props.navigator.push({
-		  name: 'Dashboard',
-      userInfo: this.state.userInfo
-		})
+    
+    _signIn(this.state.value.email, this.state.value.password)
+    .then((responseData) => {
+      this._onValueChange('access_token', responseData.token)
+    }).then(() => {
+        this.props.navigator.push({
+        name: 'Dashboard'
+      })
+    })
+    .catch((err) => {alert(err)})
+    .done()
   }
 
   _signUp = () => {
@@ -40,20 +85,27 @@ export default class SignIn extends React.Component {
     })
   }
 
+  _onChange = (value) => {
+    this.setState({value})
+  }
+
 
   render() {
+    
     return (
       <Container style={styles.container}>
-        <View style={styles.inner}>
-          <H1>Check Up!</H1>
+        <Content padder style={styles.inner}>
+        
+          <H1 style={{textAlign: 'center'}}>Check Up!</H1>
           <Text>{'\n'}</Text>
       
-            <Item bordered>
-              <Input placeholder='Email' onChangeText={(email) => this.setState({email: email})} />
-            </Item>
-            <Item bordered>
-              <Input secureTextEntry={true} placeholder='Password' onChangeText={(password) => this.setState({password: password})} />
-            </Item>
+            <Form
+              ref='form'
+              type={signIn}
+              options={options}
+              value={this.state.value}
+              onChange={this._onChange}
+            />
             <Text></Text>
             <Button dark block onPress={this._signInButton}>
               <Text>Sign In</Text>
@@ -61,7 +113,7 @@ export default class SignIn extends React.Component {
           
             <Text>{'\n'}Forgot your login?{'\n'}</Text>
             <Text onPress={this._signUp}>Not a user? Sign up here.{'\n'}</Text>
-        </View>
+        </Content>
       </Container>
     )
   }
@@ -70,18 +122,14 @@ export default class SignIn extends React.Component {
 const styles = {
   container: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff'
   }, 
   inner: {
-    width: 90 + '%',
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 95 + '%',
   }
 }
 
