@@ -29,12 +29,16 @@ export const _getPatient = (token) => {
   return fetch(`${apiUrl}/patient/id`, {
     method: 'GET',
     headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'token': token
     }
   }).then(res => res.json())
   .then(res => {
     console.log(res)
-    res.json()
+    // res.json(userRes)
+  }).catch((err) => {
+    console.log(err)
   })
 }
 

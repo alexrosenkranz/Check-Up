@@ -10,7 +10,7 @@ module.exports = () => {
       return next()
     } else {
       // 3. verify the token has not been tampered with ...
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_PASSPHRASE, (err, decoded) => {
         if (err) {
           req.user = false
           return next()
