@@ -33,7 +33,6 @@ const options = {
   }
 }
 
-
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
@@ -139,6 +138,14 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start'
+  }, 
+  item: {
+    marginBottom: 2 + '%'
+  },
+  footer: {
+    height: 10 + '%',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   }
 }
 

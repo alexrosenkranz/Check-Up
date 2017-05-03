@@ -6,7 +6,6 @@ import Expo, {Constants} from 'expo';
 import Main from '../Main'
 import {_addProvider} from '../../lib/apiService'
 
-
 const t = require('tcomb-form-native')
 const templates = require('tcomb-form-native/lib/templates/bootstrap')
 
@@ -47,10 +46,6 @@ const options = {
   }
 }
 
-
-
-
-
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
@@ -72,7 +67,6 @@ componentDidMount = () => {
     this.setState({userInfo})
   }
 }
-
   _navigate = (route) => {
     this.props.navigator.push({
       name: `${route}`,
@@ -84,7 +78,7 @@ componentDidMount = () => {
 
      AsyncStorage.getItem('access_token').then((token) => {
       
-      _addProvider(token, this.state.value)
+      _addProvider(this.state.value, token)
         .then((result) => {
           console.log(result)
         })
@@ -95,6 +89,7 @@ componentDidMount = () => {
   _onChange = (value) => {
     this.setState({value})
   }
+
 
   render() {
     

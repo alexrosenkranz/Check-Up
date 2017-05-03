@@ -1,5 +1,5 @@
-const apiUrl = "http://localhost:3001/api/v2"
-const authUrl = "http://localhost:3001/auth"
+const apiUrl = "http://localhost:3002/api/v2"
+const authUrl = "http://localhost:3002/auth"
 
 export const _signIn = (email, password) => {
   let signInCreds = {email, password}
@@ -55,7 +55,7 @@ export const _addAppointment = (apptInfo, token) => {
 }
 
 export const _addProvider = (apptInfo, token) => {
-  
+  console.log(apptInfo)
   return fetch(`${apiUrl}/new-provider`, {
     method: 'POST',
     headers: {
@@ -64,5 +64,8 @@ export const _addProvider = (apptInfo, token) => {
       'token': token
     },
     body: JSON.stringify(apptInfo)
-  }).then(res => res.json())
+  }).then(res => {
+    console.log(res)
+    res.json()})
+    .catch((err) => console.log(err))
 }

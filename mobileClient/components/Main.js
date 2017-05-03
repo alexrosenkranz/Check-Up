@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { AsyncStorage, PropTypes, View, StyleSheet, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
-
 import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
 
 import Appointments from './home/Appointments'
@@ -45,7 +44,7 @@ async _userLogout() {
           isLoading: false
         })
       })
-    })
+    })  
   }
 
   _signOut = () => {
@@ -59,7 +58,6 @@ async _userLogout() {
 
 
   render() {
-
     if (this.state.isLoading) {
       return <View><Text>Loading...</Text></View>;
     }
@@ -76,6 +74,7 @@ async _userLogout() {
           <Right>
  <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 15}}>Sign Out<Icon name="log-out" style={{marginLeft: 20, fontSize: 15}}/></Text></Button>
           </Right>
+         
         </Header>
         <Content style={{flex:1}}>
         <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
@@ -87,7 +86,7 @@ async _userLogout() {
           </Content>
         </Content>
         <Footer style={styles.footer}>
-        
+      
         <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
           <Icon name='md-calendar'/>
           <Text>Appointments</Text>

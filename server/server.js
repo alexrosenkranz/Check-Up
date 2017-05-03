@@ -13,7 +13,8 @@ app.disable('x-powered-by')
 const PORT = process.env.PORT || 3001
 
 // Server staic files ------------------------------ /
-app.use(express.static(path.join(__dirname, '/..', '/browserClient/dist')))
+// app.use(express.static(path.join(__dirname, '/..', '/browserClient/dist')))
+app.use(express.static(path.join(__dirname, '/build')))
 
 // App middleware ------------------------------ /
 app.use(morgan('dev')) // for logging
@@ -24,7 +25,8 @@ app.use(bodyParser.json())
 
 // Route config -------------------------------------------/
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'))
+  // res.sendFile(path.join(__dirname, '/index.html'))
+  res.sendFile(path.join(__dirname, '/bundle/index.html'))
 })
 app.use('/auth', require('./controllers/authRouter'))
 app.use('/api/v2', require('./controllers/apiRouter'))

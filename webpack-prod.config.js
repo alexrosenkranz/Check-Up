@@ -2,11 +2,11 @@ const path = require('path')
 
 module.exports = {
   // watch: true,
-  devtool: 'source-map',
+  // devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.json']
   },
-  entry: path.join(__dirname, '/browserClient/src/index.jsx'),
+  entry: path.join(__dirname, '/browserClient/src/index.js'),
   output: {
     path: path.join(__dirname, '/browserClient/dist/'),
     filename: 'bundle.js'

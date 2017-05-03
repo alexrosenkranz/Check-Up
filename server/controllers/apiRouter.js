@@ -40,18 +40,23 @@ router.get('/patient/id', (req, res) => {
 
 router.post('/new-patient', (req, res) => {
   const { email, first_name, last_name, password } = req.body
+  console.log('email: ', email)
+  console.log('first_name: ', first_name)
+  console.log('last_name: ', last_name)
   const ptData = { email, first_name, last_name, password }
   Query.addPatient(ptData).then((result) => {
+    console.log(result)
     res.json(result)
   }).catch((err) => {
-    res.json(err)
+    console.log(err)
+    res.json({ err: true })
   })
 })
 
 router.post('/new-provider', (req, res) => {
   const { name, phone, address, specialty } = req.body
   const providerData = { name, phone, address, specialty }
-  Query.addPatient(req.user.email, providerData).then((result) => {
+  Query.addProvider(req.user.email, providerData).then((result) => {
     res.json(result)
   }).catch((err) => {
     res.json(err)

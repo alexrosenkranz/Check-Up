@@ -11,7 +11,6 @@ import UserProfile from './components/user/UserProfile'
 import Vitals from './components/user/Vitals'
 import Medication from './components/user/Medication'
 import Main from './components/Main'
-import SideBar from './components/Sidebar';
 import {
   StackNavigator,
 } from 'react-navigation'
@@ -26,7 +25,6 @@ export default class App extends React.Component {
     this.state = {
       isReady: false,
       isLoggedIn: false,
-
     }
   }
   renderScene = (route, navigator, passProps) => {
@@ -66,6 +64,7 @@ export default class App extends React.Component {
     if (route.name == 'Medication') {
       return <Medication refs={this.refs} navigator={navigator} userInfo={route.userInfo} />
     }
+
   }
 async componentWillMount() {
   if (Platform.OS === 'android') {
@@ -79,6 +78,11 @@ async componentWillMount() {
 }
 
 
+
+ _navigate = (route) => {
+    this.refs.navigator.push(route);
+    this.refs.drawer.close();
+}
   // PUT SOMETHING IN HERE TO ROUTE NAVIGATOR TO DASHBOARD IF LOGGED IN 
 
   render () {
