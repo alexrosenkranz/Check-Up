@@ -26,13 +26,6 @@ async _userLogout() {
   }
 }
 
-  _addAppt = () => {
-    this.props.navigator.push({
-      name: 'AddAppt',
-      userInfo: this.state.userInfo
-    })
-  }
-
   _navigate = (route) => {
     this.props.navigator.push({
       name: `${route}`,
@@ -88,9 +81,9 @@ async _userLogout() {
         <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
         <Appointments userInfo={this.state.userInfo} />
         </Content>
-        <Content style={{flex: 1}}>
-        <Button full style={{flex: 2}} onPress={this._addAppt.bind(this)}><Text>Add Appointment</Text></Button>
-        <Button full><Text>Add Appointment</Text></Button>
+        <Content style={{flex: 1, flexDirection: 'column'}}>
+        <Button full style={{flex: 1}} onPress={() => this._navigate('AddAppt')}><Text>Add Appointment</Text></Button>
+        <Button full style={{flex: 1}} onPress={() => this._navigate('AddProvider')}><Text>Add Provider</Text></Button>
           </Content>
         </Content>
         <Footer style={styles.footer}>

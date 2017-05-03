@@ -1,22 +1,68 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Navigator, ScrollView } from 'react-native'
+import { AsyncStorage, View, StyleSheet, Navigator, ScrollView } from 'react-native'
 import moment from 'moment'
-import { Container,Content, Header, Body, Form, Item, Input,  Label, Picker, Button, Text,Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
+import { Container,Content, Header, Body, Footer, Item, Input,  Label, Picker, Button, Text,Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
 import Expo, {Constants} from 'expo';
 import Main from '../Main'
 import {_addProvider} from '../../lib/apiService'
+
+
+const t = require('tcomb-form-native')
+const templates = require('tcomb-form-native/lib/templates/bootstrap')
+
+
+const Form = t.form.Form
+t.form.Form.templates = templates;
+
+
+const addProvider = t.struct({
+  name: t.String,
+  phone: t.String,
+  address: t.String,
+  specialty:  t.String
+})
+
+const options = {
+  fields: {
+    name: {
+      label: 'Doctor/Lab Name',
+      autoCapitalize: 'words',
+      autoCorrect: false,
+    },
+    phone: {
+      label: 'Phone Number',
+      keyboardType: 'phone-pad',
+      help: '123-456-7890 Format'
+    },
+    address: {
+      multiline: true,
+      numberOfLines: 4,
+      help: 'Street, City, State, ZIP',
+    },
+    specialty: {
+      multiline: true,
+      numberOfLines: 4,
+      height: 50
+    }
+  }
+}
+
+
+
 
 
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      first_name: '',
-      last_name: '',
-      gender: '-',
-      email: '',
-      password: '',
-      userInfo: ''
+      value: {
+        name: '',
+        phone: '',
+        address: '',
+        specialty: ''
+      },
+      userInfo: '',
+      isLoading: true
     }
   }
 
@@ -34,6 +80,21 @@ componentDidMount = () => {
     })
   }
 
+   _addProviderButton = () => {
+
+     AsyncStorage.getItem('access_token').then((token) => {
+      
+      _addProvider(token, this.state.value)
+        .then((result) => {
+          console.log(result)
+        })
+      })
+    }
+  
+
+  _onChange = (value) => {
+    this.setState({value})
+  }
 
   render() {
     
@@ -72,46 +133,21 @@ componentDidMount = () => {
           <Right/>
         </Header>
         <Content padder>
-          <Text>Enter your appointment information.{'\n'}</Text>
-          <Item style={styles.item}  floatingLabel>
-            <Label>Appointment Date</Label>
-            <Input onChangeText={(text) => this.setState({first_name: text})} />
-          </Item>
-          <Item style={styles.item}  floatingLabel>
-            <Label>Last Name</Label>
-            <Input onChangeText={(text) => this.setState({last_name: text})} />
-          </Item>
-         
-          <Item style={styles.item}  floatingLabel>
-            <Label>Email</Label>
-            <Input onChangeText={(text) => this.setState({email: text})} />
-          </Item>
-          
-          <Item style={styles.item}  floatingLabel>
-            <Label>Password</Label>
-            <Input secureTextEntry={true}  onChangeText={(password) => this.setState({password: password})} />
-          </Item>
-          <Item style={styles.item} stacked>
-          <Label>Gender</Label>
-            <Picker
-                placeholder="Pick One"
-                iosHeader="Select one"
-                mode="dropdown"
-                selectedValue={this.state.gender}
-                onValueChange={(gender) => this.setState({gender: gender})}>
-                <nativeItem label="Pick One" value="-" />
-                <nativeItem label="Female" value="Female" />
-                <nativeItem label="Male" value="Male" />
-                <nativeItem label="Transgender" value="Transgender" />
-                <nativeItem label="I prefer not to identify." value="N/A" />
-            </Picker>
-          </Item>
+          <Text>Enter your information below and let's get started!{'\n'}</Text>
+          <Form
+              ref='form'
+              type={addProvider}
+              options={options}
+              value={this.state.value}
+              onChange={this._onChange}
+            />
 
           <Text></Text>
           
-          <Button dark block onPress={this._signUpButton}>
-            <Text>Sign Up</Text>
+          <Button dark block onPress={this._addProviderButton}>
+            <Text>Add Doctor</Text>
           </Button>
+
 
 
         </Content>
@@ -154,10 +190,7 @@ const styles = {
     alignItems: 'flex-start',
     justifyContent: 'flex-start'
   }, 
-  item: {
-    marginBottom: 2 + '%'
-  },
-    footer: {
+  footer: {
     height: 10 + '%',
     justifyContent: 'space-around',
     alignItems: 'center'

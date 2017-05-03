@@ -41,8 +41,8 @@ export const _getPatient = (token) => {
 }
 
 
-export const _addAppointment = (username, token) => {
-  console.log(username)
+export const _addAppointment = (apptInfo, token) => {
+  console.log(apptInfo)
   return fetch(`${apiUrl}/new-appointment`, {
     method: 'POST',
     headers: {
@@ -50,6 +50,19 @@ export const _addAppointment = (username, token) => {
       'Content-Type': 'application/json',
       'token': token
     },
-    body: JSON.stringify(username)
+    body: JSON.stringify(apptInfo)
+  }).then(res => res.json())
+}
+
+export const _addProvider = (apptInfo, token) => {
+  
+  return fetch(`${apiUrl}/new-provider`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'token': token
+    },
+    body: JSON.stringify(apptInfo)
   }).then(res => res.json())
 }

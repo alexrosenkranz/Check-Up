@@ -48,5 +48,15 @@ router.post('/new-patient', (req, res) => {
   })
 })
 
+router.post('/new-provider', (req, res) => {
+  const { name, phone, address, specialty } = req.body
+  const providerData = { name, phone, address, specialty }
+  Query.addPatient(req.user.email, providerData).then((result) => {
+    res.json(result)
+  }).catch((err) => {
+    res.json(err)
+  })
+})
+
 
 module.exports = router

@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 
 // Create provider Schema
 const providerSchema = new Schema({
-  first_name: {type: String, required: true},
-  last_name: {type: String, required: true},
+  name: {type: String, required: true},
+  phone: {type: String, required: true},
   address: {type: String},
   specialty: {type: String}
 })
