@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 class Header extends Component {
   constructor(props) {
-    super()
+    super(props)
   }
   render () {
     // let token = this.props.token
@@ -18,6 +18,7 @@ class Header extends Component {
         <ul>
           <li><Link to='/'>Home</Link></li>
           <li><Link to='/login'>Login</Link></li>
+          <button onClick={this.props._clearToken}>Logout</button>
         </ul>
         <h1>Hello,from the header</h1>
         {/* <code><p>{token}</p></code>*/}

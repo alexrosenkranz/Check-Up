@@ -9,7 +9,11 @@ class Main extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route exact path='/Login' component={Login}/>
+          <Route 
+            exact path='/Login' 
+            // _updateToken={this.props._updateToken}
+            render={() => ( <Login updateToken={this.props._updateToken}/> )}
+          />
         </Switch>
       </div>
     )

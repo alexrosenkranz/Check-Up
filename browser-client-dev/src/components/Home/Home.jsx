@@ -21,9 +21,11 @@ class Home extends Component {
     return (
       <div>
         <h2> Data: </h2>
-        <code>
+        {/*
+       <code>
         { JSON.stringify(this.state.data, null, 4) }
         </code>
+        */}
       </div>
     )
   }

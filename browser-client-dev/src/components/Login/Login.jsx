@@ -30,6 +30,9 @@ class Login extends Component {
       } else {
         localStorage.setItem('token', response.data.token)
         this.setState({successfulLogin: true})
+        alert("Logged in yo!")
+        this.props.updateToken(response.data.token)
+        // this.props.updateToken('poop')
       }
       // else assume there is no error message
     }.bind(this))
