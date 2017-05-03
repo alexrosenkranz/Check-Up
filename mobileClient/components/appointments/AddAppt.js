@@ -1,56 +1,75 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Navigator, ScrollView } from 'react-native'
+import {View, StyleSheet, Navigator, ScrollView, DatePickerAndroid, DatePickerIOS } from 'react-native'
 import moment from 'moment'
-import { Container,Content, Header, Body, Form, Item, Input,  Label, Picker, Button, Text,Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
+import { Container, Content, Header, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
 import Expo, {Constants} from 'expo';
 import Main from '../Main'
-import {_addAppointment} from '../../lib/apiService'
+import {_signUp} from '../../lib/apiService'
+
+
+const t = require('tcomb-form-native')
+const templates = require('tcomb-form-native/lib/templates/bootstrap')
+
+
+const Form = t.form.Form
+t.form.Form.templates = templates;
+
+
+const addAppt = t.struct({
+  appTime: t.Date,
+  provider: t.String,
+  notes: t.maybe(t.String)
+})
+
+const options = {
+  fields: {
+    notes: {
+      autoCapitalize: 'none',
+      autoCorrect: false,
+    },
+    appTime: {
+      mode: 'time'
+    }
+  }
+}
 
 
 export default class SignIn extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      first_name: '',
-      last_name: '',
-      gender: '-',
-      email: '',
-      password: '',
-      userInfo: ''
+      value: {
+        appTime: '',
+        provider: '',
+        notes: '',
+      },
+      userInfo: '',
+      isLoading: true
     }
   }
 
-componentDidMount = () => {
-  let userInfo = this.props.userInfo
-  if (userInfo) { 
-    this.setState({userInfo})
+  componentDidMount() {
+    const userInfo = this.props.userInfo
+    this.setState({userInfo: userInfo, isLoading: false})
   }
-}
 
+   _navigate = (route) => {
+    this.props.navigator.push({
+      name: `${route}`,
+      userInfo: this.state.userInfo
+    })
+  }
+
+   _onChange = (value) => {
+    this.setState({value})
+  }
 
   render() {
-    
-    const nativeItem= Picker.Item
 
-    if(!this.state.userInfo) {
-      return (<Container style={{paddingTop:Constants.statusBarHeight}}>
-      <Header>
-          <Left>
-            <Button onPress={() => this.props.navigator.push({name: 'SignIn'})} transparent>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body style={{flex: 3}}>
-            <Title>Who are you?!</Title>
-          </Body>
-        </Header> 
-        <Content padder>
-          <Text>I don't know how you made it this far, but you aren't logged in! Click the back arrow to sign in.</Text>
-        </Content>
-        </Container>)
+    if (this.state.isLoading) {
+      return <View><Text>Loading...</Text></View>;
     }
-
-
+    
     return (
       <Container style={{paddingTop: Constants.statusBarHeight}}>
         <Header>
@@ -59,46 +78,20 @@ componentDidMount = () => {
               <Icon name='arrow-back' />
             </Button>
           </Left>
-          <Body style={{flex: 3}}>
-            <Title>Add an Appointment</Title>
+          <Body>
+            <Title style={{flex: 3}}>Add an Appointment</Title>
           </Body>
           <Right/>
         </Header>
         <Content padder>
           <Text>Enter your information below and let's get started!{'\n'}</Text>
-          <Item style={styles.item}  floatingLabel>
-            <Label>First Name</Label>
-            <Input onChangeText={(text) => this.setState({first_name: text})} />
-          </Item>
-          <Item style={styles.item}  floatingLabel>
-            <Label>Last Name</Label>
-            <Input onChangeText={(text) => this.setState({last_name: text})} />
-          </Item>
-         
-          <Item style={styles.item}  floatingLabel>
-            <Label>Email</Label>
-            <Input onChangeText={(text) => this.setState({email: text})} />
-          </Item>
-          
-          <Item style={styles.item}  floatingLabel>
-            <Label>Password</Label>
-            <Input secureTextEntry={true}  onChangeText={(password) => this.setState({password: password})} />
-          </Item>
-          <Item style={styles.item} stacked>
-          <Label>Gender</Label>
-            <Picker
-                placeholder="Pick One"
-                iosHeader="Select one"
-                mode="dropdown"
-                selectedValue={this.state.gender}
-                onValueChange={(gender) => this.setState({gender: gender})}>
-                <nativeItem label="Pick One" value="-" />
-                <nativeItem label="Female" value="Female" />
-                <nativeItem label="Male" value="Male" />
-                <nativeItem label="Transgender" value="Transgender" />
-                <nativeItem label="I prefer not to identify." value="N/A" />
-            </Picker>
-          </Item>
+          <Form
+              ref='form'
+              type={addAppt}
+              options={options}
+              value={this.state.value}
+              onChange={this._onChange}
+            />
 
           <Text></Text>
           
@@ -108,6 +101,23 @@ componentDidMount = () => {
 
 
         </Content>
+        <Footer style={styles.footer}>
+        
+      <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
+          <Icon name='md-calendar'/>
+          <Text>Appointments</Text>
+        </Button>      
+        
+        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('Providers')}>
+          <Icon name='ios-medical'/>
+          <Text>Providers</Text>
+        </Button>        
+        
+        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('UserProfile')}>
+          <Icon name='md-body'/>
+          <Text>User Info</Text>
+        </Button> 
+        </Footer>
       </Container>
     )
   }
@@ -129,9 +139,6 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start'
-  }, 
-  item: {
-    marginBottom: 2 + '%'
   }
 }
 

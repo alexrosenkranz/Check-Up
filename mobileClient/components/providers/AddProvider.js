@@ -27,6 +27,13 @@ componentDidMount = () => {
   }
 }
 
+  _navigate = (route) => {
+    this.props.navigator.push({
+      name: `${route}`,
+      userInfo: this.state.userInfo
+    })
+  }
+
 
   render() {
     
@@ -60,7 +67,7 @@ componentDidMount = () => {
             </Button>
           </Left>
           <Body style={{flex: 3}}>
-            <Title>Add an Appointment</Title>
+            <Title>Add A Provider</Title>
           </Body>
           <Right/>
         </Header>
@@ -108,6 +115,23 @@ componentDidMount = () => {
 
 
         </Content>
+        <Footer style={styles.footer}>
+        
+        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
+          <Icon name='md-calendar'/>
+          <Text>Appointments</Text>
+        </Button>      
+        
+        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('Providers')}>
+          <Icon name='ios-medical'/>
+          <Text>Providers</Text>
+        </Button>        
+        
+        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('UserProfile')}>
+          <Icon name='md-body'/>
+          <Text>User Info</Text>
+        </Button> 
+        </Footer>
       </Container>
     )
   }
@@ -132,6 +156,11 @@ const styles = {
   }, 
   item: {
     marginBottom: 2 + '%'
+  },
+    footer: {
+    height: 10 + '%',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   }
 }
 

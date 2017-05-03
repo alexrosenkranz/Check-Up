@@ -4,10 +4,9 @@ import { Constants } from 'expo';
 
 import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
 
-import Appointments from './home/Appointments'
-import {_getPatient} from '../lib/apiService'
+import {_getPatient} from '../../lib/apiService'
 
-export default class Main extends Component {
+export default class Medication extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -33,25 +32,15 @@ async _userLogout() {
     })
   }
 
+   componentDidMount() {
+    const userInfo = this.props.userInfo
+    this.setState({userInfo: userInfo, isLoading: false})
+  }
+
   _navigate = (route) => {
     this.props.navigator.push({
       name: `${route}`,
       userInfo: this.state.userInfo
-    })
-  }
-
-   componentWillMount() {
-    AsyncStorage.getItem('access_token').then((token) => {
-      
-      _getPatient(token)
-        .then((result) => {
-          console.log(result)
-          this.setState({userInfo: result})
-        }).then(() => {
-          this.setState({
-          isLoading: false
-        })
-      })
     })
   }
 
@@ -74,15 +63,15 @@ async _userLogout() {
     return (
       <Container style={styles.container}>
         <Header>
-          <Body>
-
-         
-          <Title style={{fontSize: 27}}> <Icon name='md-checkmark' style={{fontSize: 27,marginRight: 15}}/> Dashboard</Title>
-            
+          <Left>
+            <Button onPress={() => this.props.navigator.pop()} transparent>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body style={{flex: 3}}>
+            <Title>Add Medicine</Title>
           </Body>
-          <Right>
- <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 15}}>Sign Out<Icon name="log-out" style={{marginLeft: 20, fontSize: 15}}/></Text></Button>
-          </Right>
+          <Right/>
         </Header>
         <Content style={{flex:1}}>
         <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
