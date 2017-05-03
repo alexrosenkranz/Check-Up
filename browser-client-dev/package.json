@@ -4,8 +4,12 @@
   "private": true,
   "proxy": "http://localhost:3002",
   "dependencies": {
+    "axios": "^0.16.1",
+    "jwt-decode": "^2.2.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-bootstrap": "^0.31.0",
+    "react-dom": "^15.5.4",
+    "react-router-dom": "^4.1.1"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
