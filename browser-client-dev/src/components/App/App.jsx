@@ -52,6 +52,9 @@ class App extends Component {
   _decodeToken(token) {
     let decodedToken = ''
     // alert(`token: ${token}`)
+    if (token == undefined || token == null) {
+      return decodedToken
+    }
     if (token) {
       var base64Url = token.split('.')[1]
       var base64 = base64Url.replace('-', '+').replace('_', '/')

@@ -3,9 +3,6 @@ import Header from '../Header/Header'
 import Main from '../Main/Main'
 
 // import * as axios from 'axios'
-// const jwtDecode = require('jwt-decode')
-// import  from 'jwt-decode'
-import jwtDecode from 'jwt-decode'
 
 class App extends Component {
   constructor(props) {
@@ -20,13 +17,10 @@ class App extends Component {
     this._decodeToken = this._decodeToken.bind(this)
   }
   componentWillMount() {
-    // alert('Componenet will mount')
     const token = localStorage.getItem('token')
-    // if (!token) return
-    // alert('There is a token ...')
     // check that token hasn't expired
     const decodedToken = this._decodeToken(token)
-    if (decodedToken == '') {
+    if (decodedToken === '') {
       this._clearToken()
       return
     }
@@ -41,6 +35,7 @@ class App extends Component {
   }
   _updateToken (newToken) {
     // alert('Updating token!')
+    // alert(`updating token: ${newToken}`)
     const decodedToken = this._decodeToken(newToken)
     // alert(`decoded: ${decodedToken}`)
     this.setState({
@@ -54,12 +49,17 @@ class App extends Component {
     this.setState({ token: '', decodedToken: '', loggedIn: false })
     localStorage.removeItem('token')
   }
-  _decodeToken(token) {
+  _decodeToken(tokenRaw) {
+    // const token = tokenRaw || false
     let decodedToken = ''
-    try {
-      decodedToken = jwtDecode(token)
-    } catch (e) {
-      // console.warn(e)
+    // alert(`token: ${token}`)
+    // if (token == undefined || token == null) {
+    //   return decodedToken
+    // }
+    if (token) {
+      var base64Url = token.split('.')[1]
+      var base64 = base64Url.replace('-', '+').replace('_', '/')
+      decodedToken = JSON.parse(window.atob(base64))
     }
     // alert(`decoded: ${decodedToken}`)
     return decodedToken
