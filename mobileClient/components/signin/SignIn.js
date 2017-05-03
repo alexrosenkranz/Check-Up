@@ -3,7 +3,7 @@ import {AsyncStorage, View, StyleSheet, Navigator, Image } from 'react-native'
 import { Container, Content, Button, Text, H1, H2, H3} from 'native-base'
 import { Constants } from 'expo'; 
 import Main from '../Main'
-import {_signIn} from '../../lib/apiService'
+import {_signIn, _getPatient} from '../../lib/apiService'
 
 const t = require('tcomb-form-native')
 const templates = require('tcomb-form-native/lib/templates/bootstrap')
@@ -52,11 +52,18 @@ export default class SignIn extends React.Component {
 
   componentWillMount() {
       AsyncStorage.getItem('access_token').then((token) => {
-        console.log(token)
-        this.setState({
-          isLoading: false
-        });
-      });
+        if (!token) {
+          this.setState({
+            isLoading: false
+          })
+        } else {
+          _getPatient(token).then((result) => {
+            this.props.navigator.push({
+              name: 'Dashboard'
+            })
+          })
+        }
+      })
     }
 
 

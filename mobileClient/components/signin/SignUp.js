@@ -6,10 +6,8 @@ import Expo, {Constants} from 'expo';
 import Main from '../Main'
 import {_signUp} from '../../lib/apiService'
 
-
 const t = require('tcomb-form-native')
 const templates = require('tcomb-form-native/lib/templates/bootstrap')
-
 
 const Form = t.form.Form
 t.form.Form.templates = templates;
@@ -68,7 +66,7 @@ export default class SignIn extends React.Component {
     })
   }
 
-   _onChange = (value) => {
+  _onChange = (value) => {
     this.setState({value})
   }
 

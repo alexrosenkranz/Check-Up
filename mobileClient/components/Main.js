@@ -72,7 +72,7 @@ async _userLogout() {
             
           </Body>
           <Right>
- <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 15}}>Sign Out<Icon name="log-out" style={{marginLeft: 20, fontSize: 15}}/></Text></Button>
+ <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 17}}>Sign Out <Icon name="log-out" style={{marginLeft: 20, fontSize: 17}}/></Text></Button>
           </Right>
          
         </Header>

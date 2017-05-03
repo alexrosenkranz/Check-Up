@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Navigator, ScrollView, DatePickerAndroid, DatePickerIOS } from 'react-native'
 import moment from 'moment'
-import { Container, Content, Header, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
+import { Container, Content, Header, Footer, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
 import Expo, {Constants} from 'expo';
 import Main from '../Main'
 import {_signUp} from '../../lib/apiService'
@@ -16,7 +16,7 @@ t.form.Form.templates = templates;
 
 
 const addAppt = t.struct({
-  appTime: t.Date,
+  appTime: t.String,
   provider: t.String,
   notes: t.maybe(t.String)
 })
@@ -28,7 +28,7 @@ const options = {
       autoCorrect: false,
     },
     appTime: {
-      mode: 'time'
+      mode: 'date'
     }
   }
 }
@@ -64,9 +64,9 @@ export default class SignIn extends React.Component {
   }
 
   render() {
-
+    console.log(this.state.userInfo.providers)
     if (this.state.isLoading) {
-      return <View><Text>Loading...</Text></View>;
+      return <View><Text>Loading...</Text></View>
     }
     
     return (
@@ -131,16 +131,6 @@ const styles = {
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff'
-  },
-  inner: {
-    width: 90 + '%',
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
-  }, 
-  item: {
-    marginBottom: 2 + '%'
   },
   footer: {
     height: 10 + '%',
