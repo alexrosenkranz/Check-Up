@@ -67,3 +67,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.0.5] - 2017-05-01
 ### Added
 - added medicineSchema, and basic unit test
+
+## [2.0.7_2] - 2017-05-02
+### Added
+- react router 4, login form, redirects correctly to home page after successful logins
