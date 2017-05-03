@@ -9,16 +9,17 @@ class Header extends Component {
     super(props)
   }
   render () {
-    // let token = this.props.token
-    // let decoded = jwtDecode(token)
-    // const jwt = jwtLib.decode(token)
-
+    let element
+    if (this.props.loggedIn) {
+      element = (<li><a onClick={this.props._clearToken}>Logout</a></li>)
+    } else {
+      element = (<li><Link to='/login'>Login</Link></li>)
+    }
     return (
       <div>
         <ul>
           <li><Link to='/'>Home</Link></li>
-          <li><Link to='/login'>Login</Link></li>
-          <button onClick={this.props._clearToken}>Logout</button>
+          {element}
         </ul>
         <h1>Hello,from the header</h1>
         {/* <code><p>{token}</p></code>*/}

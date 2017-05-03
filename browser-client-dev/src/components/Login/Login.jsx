@@ -30,7 +30,7 @@ class Login extends Component {
       } else {
         localStorage.setItem('token', response.data.token)
         this.setState({successfulLogin: true})
-        alert("Logged in yo!")
+        // alert("Logged in yo!")
         this.props.updateToken(response.data.token)
         // this.props.updateToken('poop')
       }
@@ -60,7 +60,9 @@ class Login extends Component {
         <input type="password" onChange={this.handleChange.bind(this, 'password')} value={this.state.password}/>
         </label>
         <input type="submit" value="Submit" />
+        {/*
         <button type="button" className="btn"> SUBMIT </button>
+        */}
         {this.state.msg && <h4>{this.state.msg}</h4>}
       </form>
     </div>

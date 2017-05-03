@@ -29,8 +29,8 @@ module.exports = function (contBool) {
         const payload = {
           _id: userResult._id,
           email: userResult.email,
-          exp: Math.floor(Date.now() / 1000)
-          // exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in 1 hour
+          // exp: Math.floor(Date.now() / 1000) // for testing
+          exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in 1 hour
         }
         // 3b. sign the token
         const token = jwt.sign(payload, process.env.JWT_PASSPHRASE)

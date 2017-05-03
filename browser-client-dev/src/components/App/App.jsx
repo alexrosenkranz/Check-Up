@@ -15,36 +15,27 @@ class App extends Component {
     }
     this._updateToken = this._updateToken.bind(this)
     this._clearToken = this._clearToken.bind(this)
+    this._decodeToken = this._decodeToken.bind(this)
   }
   componentWillMount() {
-    let token = localStorage.getItem('token')
-    this.setState({ token })
-    // let decodedToken
-    // try {
-    //   decodedToken = jwtDecode(token)
-    //   // check if the decodedToken is not expired
-    //   console.log(decodedToken)
-    //   if (decodedToken.exp < Date.now() / 1000) {
-    //     console.log('expired yo!')
-    //   }
-    //   // console.log(decodedToken)
-    // } catch (e) {
-    //   console.log(e)
-    //   console.log('Catch')
-    //   decodedToken = {}
-    //   token = ''
-    //   localStorage.clearItem('token')
-    // }
-    // this.setState({ token, decodedToken })
+    // alert('Componenet will mount')
+    const token = localStorage.getItem('token')
+    if (!token) return
+    // alert('There is a token ...')
+    // check that token hasn't expired
+    const decodedToken = this._decodeToken(token)
+    if (decodedToken.exp < Date.now() / 1000) {
+      console.log('exp', decodedToken.exp)
+      // alert('Expired Token')
+      this._clearToken()
+    } else {
+      // alert('Token not expired')
+      this._updateToken(token)
+    }
   }
   _updateToken (newToken) {
-    alert('Updating token!')
-    let decodedToken = ''
-    try {
-      decodedToken = jwtDecode(newToken)
-    } catch (e) {
-      console.warn(e)
-    }
+    // alert('Updating token!')
+    const decodedToken = this._decodeToken(newToken)
     this.setState({
       token: newToken,
       decodedToken: decodedToken,
@@ -52,15 +43,32 @@ class App extends Component {
     })
   }
   _clearToken () {
-    alert('clearing token')
+    // alert('clearing token')
     this.setState({ token: '', decodedToken: '', loggedIn: false })
     localStorage.removeItem('token')
+  }
+  _decodeToken(token) {
+    let decodedToken = ''
+    try {
+      decodedToken = jwtDecode(token)
+    } catch (e) {
+      // console.warn(e)
+    }
+    return decodedToken
   }
   render() {
     return (
       <div>
-        <Header token={this.state.token} _clearToken={this._clearToken}/>
-        <Main _updateToken={this._updateToken}/>
+        <Header 
+        token={this.state.token}
+        _clearToken={this._clearToken}
+        loggedIn={this.state.loggedIn}
+        />
+        <Main 
+        _updateToken={this._updateToken}
+        _decodeToken={this._decodeToken}
+        token={this.state.token}
+        />
       </div>
     )
   }
