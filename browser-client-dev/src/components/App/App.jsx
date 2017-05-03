@@ -3,7 +3,8 @@ import Header from '../Header/Header'
 import Main from '../Main/Main'
 
 // import * as axios from 'axios'
-const jwtDecode = require('jwt-decode')
+// const jwtDecode = require('jwt-decode')
+import * as jwtDecode from 'jwt-decode'
 
 class App extends Component {
   constructor(props) {

@@ -8,8 +8,24 @@ class Main extends Component {
     return (
       <div>
         <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route exact path='/Login' component={Login}/>
+          <Route 
+            exact path='/'
+            // component={Home}
+            render={() => (
+              <Home 
+              token={this.props.token}
+              _decodeToken={this.props._decodeToken}
+              />
+            )}
+          />
+          <Route 
+            exact path='/Login' 
+            // _updateToken={this.props._updateToken}
+            render={() => ( <Login 
+              updateToken={this.props._updateToken}
+              _decodeToken={this.props._decodeToken}
+            /> )}
+          />
         </Switch>
       </div>
     )

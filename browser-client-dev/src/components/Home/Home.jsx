@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as axios from 'axios'
-const jwtDecode = require('jwt-decode')
+// const jwtDecode = require('jwt-decode')
+import * as jwtDecode from 'jwt-decode'
 
 // const Home = () => (<h1>You are at the home page</h1>)
 class Home extends Component {
