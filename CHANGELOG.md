@@ -71,3 +71,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.0.7_2] - 2017-05-02
 ### Added
 - react router 4, login form, redirects correctly to home page after successful logins
+
+## [2.0.7_3] - 2017-05-02
+### Added
+- can clear token and update token in the App component
