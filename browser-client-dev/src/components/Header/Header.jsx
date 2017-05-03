@@ -5,23 +5,30 @@ import { Link } from 'react-router-dom'
 // const jwtDecode = require('jwt-decode')
 
 class Header extends Component {
-  constructor(props) {
-    super(props)
-  }
+  // constructor(props) {
+  //   super(props)
+  // }
   render () {
-    let element
+    let navigation
     if (this.props.loggedIn) {
-      element = (<li><a onClick={this.props._clearToken}>Logout</a></li>)
+      navigation = (        
+        <ul>
+          <li><Link to='/'>Home</Link></li>
+          <li><a onClick={this.props._clearToken}>Logout</a></li>
+        </ul>)
     } else {
-      element = (<li><Link to='/login'>Login</Link></li>)
+      navigation = (
+        <ul>
+          <li><Link to='/'>Home</Link></li>
+          <li><Link to='/login'>Login</Link></li>
+          <li><Link to='/register'>Register</Link></li>
+        </ul>
+      )
     }
     return (
       <div>
-        <ul>
-          <li><Link to='/'>Home</Link></li>
-          {element}
-        </ul>
-        <h1>Hello,from the header</h1>
+        { navigation }
+        <h1>Hello, from the header</h1>
         {/* <code><p>{token}</p></code>*/}
       </div>
     )

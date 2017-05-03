@@ -20,18 +20,20 @@ class Login extends Component {
     formData[propertyName] = event.target.value
     this.setState(formData)
   }
-  handleSubmit(e) {
+  handleSubmit (e) {
     e.preventDefault()
     const { email, password } = this.state
-    axios.post('/auth/login', { email, password }).then(function(response){
-      // console.log(response.data)
+    axios.post('/auth/login', { email, password }).then(function (response) {
+      console.log(response.data)
       if (response.data.msg) {
         this.setState({msg: response.data.msg})
       } else {
+        console.log(response.data.token)
+        debugger
         localStorage.setItem('token', response.data.token)
         this.setState({successfulLogin: true})
         // alert("Logged in yo!")
-        this.props.updateToken(response.data.token)
+        this.props._updateToken(response.data.token)
         // this.props.updateToken('poop')
       }
       // else assume there is no error message

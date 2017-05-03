@@ -15,7 +15,7 @@ module.exports = {
     .populate('medications')
   },
   findPatientByEmail: (email) => {
-    return Patient.findOne({ email }, { password: 0 })
+    return Patient.findOne({ email })
     .populate('appointments')
     .populate('providers')
     .populate('medications')

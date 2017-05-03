@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import * as axios from 'axios'
+// import * as axios from 'axios'
 // const jwtDecode = require('jwt-decode')
-import * as jwtDecode from 'jwt-decode'
+// import * as jwtDecode from 'jwt-decode'
 
 // const Home = () => (<h1>You are at the home page</h1>)
 class Home extends Component {
@@ -30,18 +30,18 @@ class Home extends Component {
   //   return decodedToken
   // }
   render () {
-    let decoded = this.props._decodeToken(this.props.token)
+    // let decoded = this.props._decodeToken(this.props.token)
     // let decoded = 'dtes'
     return (
       <div>
         <h2> Data: </h2>
         <code>
-        { JSON.stringify(decoded, null, 4) }
+        { JSON.stringify(this.props.decodedToken, null, 4) }
         </code>
         {/*
        <code>
+        { JSON.stringify(decoded, null, 4) }
         { JSON.stringify(this.props.token, null, 4) }
-        { JSON.stringify(this.state.data, null, 4) }
         </code>
         */}
       </div>

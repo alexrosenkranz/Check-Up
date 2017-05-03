@@ -18,14 +18,20 @@ module.exports = function (contBool) {
     }
     // 2. find user and check password
     Query.findPatientByEmail(email).then((userResult) => {
-      if (!userResult) {
+      // console.log('USERREULT: ', userResult)
+      // console.log(password)
+      // console.log(userResult.checkPassword(password))
+      if (!userResult._id) {
+        console.log('No user found')
         return res.json({msg: 'Sorry, no user found with that email'})
       } else if (!userResult.checkPassword(password)) {
         // 2b. check that the password matches
+        console.log('Passwords do not match')
         return res.json({ msg: 'Sorry, that password is incorrect' })
       } else {
         // 3. make the token
         // 3a. make the payload
+        console.log('signing you in...')
         const payload = {
           _id: userResult._id,
           email: userResult.email,
@@ -44,6 +50,9 @@ module.exports = function (contBool) {
           return res.json({ token })
         }
       }
+    }).catch((err) => {
+      console.log('Something went wrong inside checkLogin...')
+      res.json(err)
     })
   }
 }
