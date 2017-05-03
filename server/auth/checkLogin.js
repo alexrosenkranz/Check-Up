@@ -18,10 +18,7 @@ module.exports = function (contBool) {
     }
     // 2. find user and check password
     Query.findPatientByEmail(email).then((userResult) => {
-      // console.log('USERREULT: ', userResult)
-      // console.log(password)
-      // console.log(userResult.checkPassword(password))
-      if (!userResult._id) {
+      if (!userResult) {
         console.log('No user found')
         return res.json({msg: 'Sorry, no user found with that email'})
       } else if (!userResult.checkPassword(password)) {

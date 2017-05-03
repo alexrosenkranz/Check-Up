@@ -4,7 +4,8 @@ import Main from '../Main/Main'
 
 // import * as axios from 'axios'
 // const jwtDecode = require('jwt-decode')
-import * as jwtDecode from 'jwt-decode'
+// import  from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 
 class App extends Component {
   constructor(props) {
@@ -21,10 +22,14 @@ class App extends Component {
   componentWillMount() {
     // alert('Componenet will mount')
     const token = localStorage.getItem('token')
-    if (!token) return
+    // if (!token) return
     // alert('There is a token ...')
     // check that token hasn't expired
     const decodedToken = this._decodeToken(token)
+    if (decodedToken == '') {
+      this._clearToken()
+      return
+    }
     if (decodedToken.exp < Date.now() / 1000) {
       console.log('exp', decodedToken.exp)
       // alert('Expired Token')
@@ -37,6 +42,7 @@ class App extends Component {
   _updateToken (newToken) {
     // alert('Updating token!')
     const decodedToken = this._decodeToken(newToken)
+    // alert(`decoded: ${decodedToken}`)
     this.setState({
       token: newToken,
       decodedToken: decodedToken,
@@ -55,6 +61,7 @@ class App extends Component {
     } catch (e) {
       // console.warn(e)
     }
+    // alert(`decoded: ${decodedToken}`)
     return decodedToken
   }
   render() {
@@ -67,8 +74,9 @@ class App extends Component {
         />
         <Main 
         _updateToken={this._updateToken}
-        _decodeToken={this._decodeToken}
+        // _decodeToken={this._decodeToken}
         token={this.state.token}
+        decodedToken={this.state.decodedToken}
         />
       </div>
     )
