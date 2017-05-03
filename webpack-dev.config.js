@@ -6,23 +6,37 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json']
   },
-  entry: path.join(__dirname, '/client/src/index.jsx'),
+  entry: path.join(__dirname, '/browserClient/src/index.jsx'),
   output: {
-    path: path.join(__dirname, '/client/dist/'),
+    path: path.join(__dirname, '/browserClient/dist/'),
     filename: 'bundle.js'
   },
   module: {
+    // preLoaders: [
+    //   {
+    //     test: /\.jsx?$/,
+    //     include: path.join(__dirname, '/browserClient/src'),
+    //     loader: 'eslint-loader'
+    //   }
+    // ],
     // v1
-    loaders: [{
-      test: /\.jsx?$/,
-      include: path.join(__dirname, '/client/src'),
-      loader: 'babel-loader',
-      options: {
-        presets: [
-          ['react'],
-          ['es2015', {'modules': false}]
-        ]
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        include: path.join(__dirname, '/browserClient/src'),
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            ['react'],
+            ['es2015', {'modules': false}]
+          ]
+        }
       }
-    }]
+      // {
+      //   test: /\.jsx?$/,
+      //   include: path.join(__dirname, '/client/src'),
+      //   loader: 'eslint-loader'
+      // }
+    ]
   } // closes module
 }
