@@ -26,7 +26,7 @@ class App extends Component {
     // alert('There is a token ...')
     // check that token hasn't expired
     const decodedToken = this._decodeToken(token)
-    if (decodedToken == '') {
+    if (decodedToken === '') {
       this._clearToken()
       return
     }
