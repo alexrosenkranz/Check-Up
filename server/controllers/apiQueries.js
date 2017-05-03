@@ -9,7 +9,7 @@ const Medication = require('../models/medication')
 module.exports = {
   // ========== Patient Queries ========
   findAllPatients: () => {
-    return Patient.find({})
+    return Patient.find({}, { password: 0 })
     .populate('appointments')
     .populate('providers')
     .populate('medications')
@@ -21,7 +21,7 @@ module.exports = {
     .populate('medications')
   },
   findPatientById: (_id) => {
-    return Patient.find({ _id })
+    return Patient.find({ _id }, { password: 0 })
     .populate('appointments')
     .populate('providers')
     .populate('medications')

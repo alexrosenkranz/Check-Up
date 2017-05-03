@@ -12,21 +12,30 @@ module.exports = function (contBool) {
     // 1. check if there is a req.body.username && password
     const { email, password } = req.body
     if (!email || !password) {
-      return res.json({msg: 'not valid '})
+      console.log('email', email)
+      console.log('password', password)
+      return res.json({msg: 'Please provide both an email and password'})
     }
     // 2. find user and check password
     Query.findPatientByEmail(email).then((userResult) => {
-      if (!userResult) {
-        return res.json({msg: 'no user found with that email'})
+      // console.log('USERREULT: ', userResult)
+      // console.log(password)
+      // console.log(userResult.checkPassword(password))
+      if (!userResult._id) {
+        console.log('No user found')
+        return res.json({msg: 'Sorry, no user found with that email'})
       } else if (!userResult.checkPassword(password)) {
         // 2b. check that the password matches
-        return res.json({ msg: 'incorrect password' })
+        console.log('Passwords do not match')
+        return res.json({ msg: 'Sorry, that password is incorrect' })
       } else {
         // 3. make the token
         // 3a. make the payload
+        console.log('signing you in...')
         const payload = {
           _id: userResult._id,
           email: userResult.email,
+          // exp: Math.floor(Date.now() / 1000) // for testing
           exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in 1 hour
         }
         // 3b. sign the token
@@ -41,6 +50,9 @@ module.exports = function (contBool) {
           return res.json({ token })
         }
       }
+    }).catch((err) => {
+      console.log('Something went wrong inside checkLogin...')
+      res.json(err)
     })
   }
 }

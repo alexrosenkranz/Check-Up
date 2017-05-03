@@ -10,7 +10,7 @@ class TestApi extends React.Component {
     }
   }
   componentDidMount () {
-    axios.get('/api/v1/all-patients')
+    axios.get('/api/v2/all-patients')
     .then((response) => {
       this.setState({
         patients: response.data
