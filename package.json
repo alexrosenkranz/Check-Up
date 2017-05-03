@@ -12,6 +12,9 @@
     "dev": "export NODE_ENV=\"development\"; nodemon server/server.js",
     "lint:server": "node_modules/.bin/eslint --fix server/",
     "lint:test": "node_modules/.bin/eslint --fix test/",
+    "bundle": "./node_modules/.bin/webpack --config 'webpack-dev.config.js'",
+    "bundle-prod": "./node_modules/.bin/webpack --config 'webpack-prod.config.js'",
+    "prod-server": "node server/server",
     "webpack:dev": "./node_modules/.bin/webpack --config 'webpack-dev.config.js'"
   },
   "repository": {
@@ -33,10 +36,12 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "jsonwebtoken": "^7.4.0",
+    "jwt-decode": "^2.2.0",
     "moment": "^2.18.1",
     "mongoose": "^4.9.6",
     "morgan": "^1.8.1",
     "react": "^15.5.4",
+    "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.1"
   },
