@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { AsyncStorage, PropTypes, View, StyleSheet, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
-import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
+import { Container, Title, Header, Content, Footer, FooterTab, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
 
 import Appointments from './home/Appointments'
 import {_getPatient} from '../lib/apiService'
@@ -76,31 +76,30 @@ async _userLogout() {
           </Right>
          
         </Header>
-        <Content style={{flex:1}}>
-        <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
-        <Appointments userInfo={this.state.userInfo} />
-        </Content>
-        <Content style={{flex: 1, flexDirection: 'column'}}>
-        <Button full style={{flex: 1}} onPress={() => this._navigate('AddAppt')}><Text>Add Appointment</Text></Button>
-        <Button full style={{flex: 1}} onPress={() => this._navigate('AddProvider')}><Text>Add Provider</Text></Button>
-          </Content>
-        </Content>
+        <Container style={{flex: 3, marginBottom: 20, marginTop: 10}}>
+          <Appointments userInfo={this.state.userInfo} />
+        </Container>
+        <Container style={{flex: 1, flexDirection: 'column'}}>
+          <Button full style={{flex: 1}} onPress={() => this._navigate('AddAppt')}><Text>Add Appointment</Text></Button>
+          <Button full style={{flex: 1}} onPress={() => this._navigate('AddProvider')}><Text>Add Provider</Text></Button>
+        </Container>
         <Footer style={styles.footer}>
-      
-        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
-          <Icon name='md-calendar'/>
-          <Text>Appointments</Text>
-        </Button>      
+          <FooterTab>
+            <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
+              <Icon name='md-calendar'/>
+              <Text>Appointments</Text>
+            </Button>      
         
-        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('Providers')}>
-          <Icon name='ios-medical'/>
-          <Text>Providers</Text>
-        </Button>        
-        
-        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('UserProfile')}>
-          <Icon name='md-body'/>
-          <Text>User Info</Text>
-        </Button> 
+            <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('Providers')}>
+              <Icon name='ios-medical'/>
+              <Text>Providers</Text>
+            </Button>        
+            
+            <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('UserProfile')}>
+              <Icon name='md-body'/>
+              <Text>User Info</Text>
+            </Button> 
+          </FooterTab>
         </Footer>
       </Container>
     )
