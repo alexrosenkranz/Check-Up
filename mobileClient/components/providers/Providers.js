@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { AsyncStorage, PropTypes, View, StyleSheet, Navigator, Text } from 'react-native'
+import { AsyncStorage, PropTypes, View, StyleSheet, ListView, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
 
-import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
+import { Container, Title,Header, Content, Footer, FooterTab, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Card, CardItem, H1} from 'native-base'
 
 import {_getPatient} from '../../lib/apiService'
 
 export default class Providers extends Component {
   constructor(props) {
     super(props)
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       userInfo: '',
+      providers: '',
       isLoading: true
     }
     this._userLogout = this._userLogout.bind(this)
@@ -25,16 +27,13 @@ async _userLogout() {
   }
 }
 
-  _addAppt = () => {
-    this.props.navigator.push({
-      name: 'AddAppt',
-      userInfo: this.state.userInfo
-    })
-  }
 
    componentDidMount() {
     const userInfo = this.props.userInfo
-    this.setState({userInfo: userInfo, isLoading: false})
+    this.setState({
+      userInfo: userInfo,
+      providers: this.ds.cloneWithRows(userInfo.providers),
+      isLoading: false})
   }
 
   _navigate = (route) => {
@@ -55,7 +54,7 @@ async _userLogout() {
 
 
   render() {
-
+    console.log(this.state.userInfo.providers)
     if (this.state.isLoading) {
       return <View><Text>Loading...</Text></View>;
     }
@@ -74,15 +73,27 @@ async _userLogout() {
           <Right/>
         </Header>
         <Content style={{flex:1}}>
-        <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
-        </Content>
-        <Content style={{flex: 1}}>
-        <Button full style={{flex: 2}} onPress={this._addAppt.bind(this)}><Text>Add Appointment</Text></Button>
-        <Button full><Text>Add Appointment</Text></Button>
-          </Content>
+        <Text>{this.state.userInfo.first_name}'s Providers</Text>
+          <ListView
+          dataSource={this.state.providers}
+          renderRow={(provider) => 
+              <Card>
+                <CardItem>
+                    <Left>
+                        <Body>
+                          <Text style={{fontWeight: '700'}}>{provider.name}</Text>
+                          <Text>{provider.specialty}</Text>
+                          <Text>{provider.phone}</Text>
+
+                          <Text>{provider.address}</Text>
+                        </Body>
+                    </Left>
+                  </CardItem>
+            </Card>   
+        }/>
         </Content>
         <Footer style={styles.footer}>
-        
+        <FooterTab>
      <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
           <Icon name='md-calendar'/>
           <Text>Appointments</Text>
@@ -97,6 +108,7 @@ async _userLogout() {
           <Icon name='md-body'/>
           <Text>User Info</Text>
         </Button> 
+        </FooterTab>
         </Footer>
       </Container>
     )

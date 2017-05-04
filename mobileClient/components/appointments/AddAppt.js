@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Navigator, ScrollView, DatePickerAndroid, DatePickerIOS } from 'react-native'
 import moment from 'moment'
-import { Container, Content, Header, Footer, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
+import { Container, Content, Header, Footer, FooterTab, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
 import Expo, {Constants} from 'expo';
 import Main from '../Main'
 import {_signUp} from '../../lib/apiService'
@@ -101,7 +101,7 @@ export default class SignIn extends React.Component {
 
         </Content>
         <Footer style={styles.footer}>
-        
+        <FooterTab>
       <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
           <Icon name='md-calendar'/>
           <Text>Appointments</Text>
@@ -116,6 +116,7 @@ export default class SignIn extends React.Component {
           <Icon name='md-body'/>
           <Text>User Info</Text>
         </Button> 
+        </FooterTab>
         </Footer>
       </Container>
     )
