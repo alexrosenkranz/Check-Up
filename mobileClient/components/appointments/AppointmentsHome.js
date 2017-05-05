@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { AsyncStorage, PropTypes, View, StyleSheet, Navigator, Text } from 'react-native'
+import { AsyncStorage, PropTypes, View, StyleSheet, ListView, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
-
-import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
+import moment from 'moment'
+import { Container, Title,Header, Content, Footer, FooterTab, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, Card, CardItem, H1} from 'native-base'
 
 import {_getPatient} from '../../lib/apiService'
 
 export default class ApptHome extends Component {
   constructor(props) {
     super(props)
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       userInfo: '',
+      appointments: '',
       isLoading: true
     }
     this._userLogout = this._userLogout.bind(this)
@@ -32,10 +34,23 @@ async _userLogout() {
     })
   }
 
-   componentDidMount() {
-    const userInfo = this.props.userInfo
-    this.setState({userInfo: userInfo, isLoading: false})
+   componentWillMount() {
+    AsyncStorage.getItem('access_token').then((token) => {
+      
+      _getPatient(token)
+        .then((result) => {
+          console.log(result)
+          let appointments = result.appointments.reverse()
+          console.log(appointments)
+          this.setState({userInfo: result, appointments: this.ds.cloneWithRows(appointments)})
+        }).then(() => {
+          this.setState({
+          isLoading: false
+        })
+      })
+    })  
   }
+
 
   _navigate = (route) => {
     this.props.navigator.push({
@@ -74,15 +89,30 @@ async _userLogout() {
           <Right/>
         </Header>
         <Content style={{flex:1}}>
-        <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
-        </Content>
-        <Content style={{flex: 1}}>
-        <Button full style={{flex: 2}} onPress={this._addAppt.bind(this)}><Text>Add Appointment</Text></Button>
-        <Button full><Text>Add Appointment</Text></Button>
-          </Content>
+          <ListView
+          dataSource={this.state.appointments}
+          renderRow={(appointment) => 
+              <Card>
+                <CardItem>
+                    <Left>
+                        <Body>
+                          <Text style={{fontWeight: '700'}}>{moment(appointment.appTime).format('"dddd, MMMM Do YYYY, h:mm a')}</Text>
+                          <Text>{this.state.userInfo.providers.map((provider, index) => {
+                            if (provider._id === appointment.provider) {
+                              return provider.name
+                            }
+                          })
+                          
+                        }</Text>
+                          <Text>{appointment.notes}</Text>
+                        </Body>
+                    </Left>
+                  </CardItem>
+            </Card>   
+        }/>
         </Content>
         <Footer style={styles.footer}>
-        
+        <FooterTab>
         <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
           <Icon name='md-calendar'/>
           <Text>Appointments</Text>
@@ -97,6 +127,7 @@ async _userLogout() {
           <Icon name='md-body'/>
           <Text>User Info</Text>
         </Button> 
+        </FooterTab>
         </Footer>
       </Container>
     )

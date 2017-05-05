@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Navigator, ScrollView, DatePickerAndroid, DatePickerIOS } from 'react-native'
+import {AsyncStorage, View, StyleSheet, Navigator, ScrollView, DatePickerAndroid, DatePickerIOS } from 'react-native'
 import moment from 'moment'
-import { Container, Content, Header, Footer, FooterTab, Body, Item, Input, Label, Picker, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
-import Expo, {Constants} from 'expo';
+import { Container, Content, Header, Footer, FooterTab, Body, Item, Input, Label, Button, Text, Left, Title, Right, Icon, H1, H2, H3 } from 'native-base'
+import Expo, {Constants} from 'expo'
 import Main from '../Main'
-import {_signUp} from '../../lib/apiService'
+import {_addAppointment} from '../../lib/apiService'
 
 
 const t = require('tcomb-form-native')
@@ -14,33 +14,46 @@ const templates = require('tcomb-form-native/lib/templates/bootstrap')
 const Form = t.form.Form
 t.form.Form.templates = templates;
 
+let providerList = {}
+
+const Providers = t.enums(providerList)
 
 const addAppt = t.struct({
-  appTime: t.String,
-  provider: t.String,
-  notes: t.maybe(t.String)
+  appTime: t.Date,
+  provider: Providers,
+  notes: t.String
 })
 
 const options = {
   fields: {
+    appTime: {
+      label: 'Appointment Date & Time',
+      config: {
+        format: (date) => {
+          return moment(date).format("dddd, MMMM Do YYYY, h:mm a")
+        }
+      },
+    },
     notes: {
       autoCapitalize: 'none',
       autoCorrect: false,
-    },
-    appTime: {
-      mode: 'date'
     }
   }
 }
 
 export default class SignIn extends React.Component {
+
+  static defaultProps = {
+    date: new Date(),
+  };
+
   constructor(props) {
     super(props)
     this.state = {
       value: {
-        appTime: '',
+        appTime: this.props.date,
         provider: '',
-        notes: '',
+        notes: ''
       },
       userInfo: '',
       isLoading: true
@@ -49,6 +62,9 @@ export default class SignIn extends React.Component {
 
   componentDidMount() {
     const userInfo = this.props.userInfo
+    userInfo.providers.map((provider) => {
+      providerList[provider._id] = provider.name
+    })
     this.setState({userInfo: userInfo, isLoading: false})
   }
 
@@ -58,6 +74,25 @@ export default class SignIn extends React.Component {
       userInfo: this.state.userInfo
     })
   }
+
+   _addAppointment = () => {
+     AsyncStorage.getItem('access_token').then((token) => {
+      
+      _addAppointment(this.state.value, token)
+        .then(() => {
+          this.props.navigator.push({
+            name: 'ApptHome',
+            userInfo: this.state.userInfo
+          })
+        })
+      })
+    }
+  
+
+  onDateChange = (date) => {
+    this.setState({appTime: date});
+  };
+
 
    _onChange = (value) => {
     this.setState({value})
@@ -94,7 +129,7 @@ export default class SignIn extends React.Component {
 
           <Text></Text>
           
-          <Button dark block onPress={this._signUpButton}>
+          <Button dark block onPress={this._addAppointment}>
             <Text>Sign Up</Text>
           </Button>
 

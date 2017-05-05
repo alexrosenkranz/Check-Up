@@ -38,6 +38,8 @@ module.exports = {
 
   // ========== Appointment Queries ========
   addAppointment: (email, appData) => {
+    console.log(email)
+    console.log(appData)
     return new Promise((resolve, reject) => {
       // 1. Make a newApp
       const newApp = new Appointment(appData)

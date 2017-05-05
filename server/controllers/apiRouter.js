@@ -64,4 +64,15 @@ router.post('/new-provider', (req, res) => {
 })
 
 
+router.post('/new-appointment', (req, res) => {
+  const { appTime, provider, notes } = req.body
+  const apptData = { appTime, provider, notes }
+  Query.addAppointment(req.user.email, apptData).then((result) => {
+    res.json(result)
+  }).catch((err) => {
+    res.json(err)
+  })
+})
+
+
 module.exports = router

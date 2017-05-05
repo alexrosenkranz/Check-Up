@@ -70,10 +70,11 @@ async _userLogout() {
           <Body style={{flex: 3}}>
             <Title>Your Health Providers</Title>
           </Body>
-          <Right/>
+          <Right>
+            <Button transparent onPress={() => this._navigate('AddProvider')}><Icon name="md-add"/></Button>
+          </Right>
         </Header>
         <Content style={{flex:1}}>
-        <Text>{this.state.userInfo.first_name}'s Providers</Text>
           <ListView
           dataSource={this.state.providers}
           renderRow={(provider) => 
@@ -84,7 +85,6 @@ async _userLogout() {
                           <Text style={{fontWeight: '700'}}>{provider.name}</Text>
                           <Text>{provider.specialty}</Text>
                           <Text>{provider.phone}</Text>
-
                           <Text>{provider.address}</Text>
                         </Body>
                     </Left>
@@ -94,7 +94,7 @@ async _userLogout() {
         </Content>
         <Footer style={styles.footer}>
         <FooterTab>
-     <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
+        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
           <Icon name='md-calendar'/>
           <Text>Appointments</Text>
         </Button>      

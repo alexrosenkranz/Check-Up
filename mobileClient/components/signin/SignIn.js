@@ -50,23 +50,6 @@ export default class SignIn extends React.Component {
   }
 
 
-  componentWillMount() {
-      // AsyncStorage.getItem('access_token').then((token) => {
-      //   if (!token) {
-      //     this.setState({
-      //       isLoading: false
-      //     })
-      //   } else {
-      //     _getPatient(token).then((result) => {
-      //       this.props.navigator.push({
-      //         name: 'Dashboard'
-      //       })
-      //     })
-      //   }
-      // })
-    }
-
-
    async _onValueChange(item, selectedValue) {
     try {
       await AsyncStorage.setItem(item, selectedValue);
