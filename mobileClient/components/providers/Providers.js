@@ -28,13 +28,22 @@ async _userLogout() {
 }
 
 
-   componentDidMount() {
-    const userInfo = this.props.userInfo
-    this.setState({
-      userInfo: userInfo,
-      providers: this.ds.cloneWithRows(userInfo.providers),
-      isLoading: false})
+  componentWillMount() {
+    AsyncStorage.getItem('access_token').then((token) => {
+      
+      _getPatient(token)
+        .then((result) => {
+          console.log(result)
+          this.setState({userInfo: result, providers: this.ds.cloneWithRows(result.providers)})
+        }).then(() => {
+          this.setState({
+          isLoading: false
+        })
+      })
+    })  
   }
+
+
 
   _navigate = (route) => {
     this.props.navigator.push({

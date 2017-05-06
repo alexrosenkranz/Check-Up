@@ -21,50 +21,31 @@ import {
   H1
 } from 'native-base'
 
-export default class AppointmentsHome extends Component {
+export default class DashboardAppt extends Component {
   constructor(props) {
     super(props)
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      appointments: ds.cloneWithRows([{
-        doctorName: 'Dr. Bob Murphy',
-        apptDate: 'Monday, April 2nd',
-        apptTime: '3 p.m.',
-        streetAddress: '416 Harnell Avenue',
-        city: 'Oakhurst',
-        state: 'NJ',
-        zip: '07755',
-        phone: '222-222-2223',
-        email: 'info@info.com'
-      }, {
-        doctorName: 'Dr. Alex Rosenkranz',
-        apptDate: 'Thursday, April 5th',
-        apptTime: '11 a.m.',
-        streetAddress: '31 Cindy Landy',
-        city: 'Ocean',
-        state: 'NJ',
-        zip: '07712',
-        phone: '222-222-2223',
-        email: 'info@info.com'
-      },
-      ])
-    }
+   
   }
+
   
 
   render() {
+     if (this.state.isLoading) {
+      return <View><Text>Loading...</Text></View>;
+    }
+
     return (
       <Content style={{ padding: 10}}>
           <Text>Upcoming Appointments for {this.props.userInfo.first_name}</Text>
           <ListView
-          dataSource={this.state.appointments}
+          dataSource={this.props.appointments}
           renderRow={(appt) => 
               <Card>
                 <CardItem>
                     <Left>
                         <Body>
-                            <Text style={{fontWeight: '700'}}>{appt.doctorName}</Text>
-                            <Text note>{appt.apptDate} at {appt.apptTime}</Text>
+                            <Text style={{fontWeight: '700'}}>{appt.appTime}</Text>
+                            <Text>{appt.name}</Text>
                               <Button transparent>
                           <Icon active name="more" />
                           <Text>View Appointment Details</Text>

@@ -86,7 +86,9 @@ async _userLogout() {
           <Body style={{flex: 3}}>
             <Title>Your Appointments</Title>
           </Body>
-          <Right/>
+          <Right>
+            <Button transparent onPress={() => this._navigate('AddAppt')}><Icon name="md-add"/></Button>
+          </Right>
         </Header>
         <Content style={{flex:1}}>
           <ListView

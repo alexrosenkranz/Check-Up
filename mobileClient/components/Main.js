@@ -1,50 +1,46 @@
 import React, { Component } from 'react'
-import { AsyncStorage, PropTypes, View, StyleSheet, Navigator, Text } from 'react-native'
+import { AsyncStorage, PropTypes, ListView, View, StyleSheet, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
-import { Container, Title, Header, Content, Footer, FooterTab, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
-
-import Appointments from './home/Appointments'
+import { Container, Title, Header, Content, Footer, FooterTab, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Card, CardItem, H1} from 'native-base'
+import moment from 'moment'
 import {_getPatient} from '../lib/apiService'
 
 export default class Main extends Component {
   constructor(props) {
+
     super(props)
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       userInfo: '',
+      appointments: '',
       isLoading: true
     }
     this._userLogout = this._userLogout.bind(this)
   }
-
-async _userLogout() {
-  try {
-    await AsyncStorage.removeItem('access_token');
-    alert("Logout Success!")
-  } catch (error) {
-    console.log('AsyncStorage error: ' + error.message);
+   componentDidMount() {
+    AsyncStorage.getItem('access_token').then((token) => {
+      _getPatient(token)
+        .then((result) => {
+          console.log(result)
+          this.setState({userInfo: result, appointments: this.ds.cloneWithRows(result.appointments),isLoading: false})
+        })
+    })  
   }
-}
+
+  async _userLogout() {
+    try {
+      await AsyncStorage.removeItem('access_token');
+      alert("Logout Success!")
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+  }
 
   _navigate = (route) => {
     this.props.navigator.push({
       name: `${route}`,
       userInfo: this.state.userInfo
     })
-  }
-
-   componentWillMount() {
-    AsyncStorage.getItem('access_token').then((token) => {
-      
-      _getPatient(token)
-        .then((result) => {
-          console.log(result)
-          this.setState({userInfo: result})
-        }).then(() => {
-          this.setState({
-          isLoading: false
-        })
-      })
-    })  
   }
 
   _signOut = () => {
@@ -66,22 +62,40 @@ async _userLogout() {
       <Container style={styles.container}>
         <Header>
           <Body>
-
-         
-          <Title style={{fontSize: 27}}> <Icon name='md-checkmark' style={{fontSize: 27,marginRight: 15}}/> Dashboard</Title>
-            
+            <Title style={{fontSize: 27}}> <Icon name='md-checkmark' style={{fontSize: 27,marginRight: 15}}/> Dashboard</Title>
           </Body>
           <Right>
- <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 17}}>Sign Out <Icon name="log-out" style={{marginLeft: 20, fontSize: 17}}/></Text></Button>
+            <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 17}}>Sign Out <Icon name="log-out" style={{marginLeft: 20, fontSize: 17}}/></Text></Button>
           </Right>
-         
         </Header>
         <Container style={{flex: 3, marginBottom: 20, marginTop: 10}}>
-          <Appointments userInfo={this.state.userInfo} />
+           <ListView
+          dataSource={this.state.appointments}
+          renderRow={(appointment) => 
+              <Card key={appointment._id}>
+                <CardItem style={{backgroundColor: '#000'}}  header>
+                    <Text style={{fontWeight: '700', color: '#ffffff'}}>{moment(appointment.appTime).format('dddd, MMMM Do YYYY @ h:mm a')}</Text>
+                </CardItem>
+                <CardItem>
+                    <Body>
+                      <Text>Appointment with: {this.state.userInfo.providers.map((provider, index) => {
+                        if (provider._id === appointment.provider) {
+                          return provider.name
+                        }
+                      })}
+                    </Text>
+                      <Text>{appointment.notes}</Text>
+                    </Body>
+                  </CardItem>
+                  <CardItem footer>
+                  <Button bordered primary ><Text>View Appointment Details</Text></Button>
+                  </CardItem>
+            </Card>   
+        }/>
         </Container>
         <Container style={{flex: 1, flexDirection: 'column'}}>
-          <Button full style={{flex: 1}} onPress={() => this._navigate('AddAppt')}><Text>Add Appointment</Text></Button>
-          <Button full style={{flex: 1}} onPress={() => this._navigate('AddProvider')}><Text>Add Provider</Text></Button>
+          <Button full primary style={{flex: 1}} onPress={() => this._navigate('AddAppt')}><Text>Add Appointment</Text></Button>
+          <Button full primary style={{flex: 1}} onPress={() => this._navigate('AddProvider')}><Text>Add Provider</Text></Button>
         </Container>
         <Footer style={styles.footer}>
           <FooterTab>

@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-import { AsyncStorage, PropTypes, View, StyleSheet, Navigator, Text } from 'react-native'
+import { AsyncStorage, PropTypes, ListView, View, StyleSheet, Navigator, Text } from 'react-native'
 import { Constants } from 'expo'; 
+import { Container, Title, Header, Content, Footer, FooterTab, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Card, CardItem, H1} from 'native-base'
+import moment from 'moment'
 
-import { Container, Title,Header, Content, Footer, Button, Form, Item, Input, Label, Body, Left, Right, Icon, Drawer, H1} from 'native-base'
-
-import {_getPatient} from '../../lib/apiService'
-
-export default class ApptHome extends Component {
+export default class Main extends Component {
   constructor(props) {
+
     super(props)
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       userInfo: '',
-      isLoading: true
+      appointment: '',
+      isLoading: true,
     }
     this._userLogout = this._userLogout.bind(this)
   }
@@ -25,17 +26,24 @@ async _userLogout() {
   }
 }
 
-  _addAppt = () => {
+componentDidMount() {
+  let userInfo = this.props.userInfo
+  let appointment = this.props.userInfo.appointments.filter((appointment) => {
+    if (appointment._id === this.props.id) {
+      return appointment
+    }
+  })
+  console.log(appointment)
+}
+
+  _navigate = (route) => {
     this.props.navigator.push({
-      name: 'AddAppt',
+      name: `${route}`,
       userInfo: this.state.userInfo
     })
   }
 
-   componentDidMount() {
-    const userInfo = this.props.userInfo
-    this.setState({userInfo: userInfo, isLoading: false})
-  }
+  
 
   _signOut = () => {
     this._userLogout()
@@ -48,7 +56,6 @@ async _userLogout() {
 
 
   render() {
-
     if (this.state.isLoading) {
       return <View><Text>Loading...</Text></View>;
     }
@@ -63,23 +70,50 @@ async _userLogout() {
             
           </Body>
           <Right>
- <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 15}}>Sign Out<Icon name="log-out" style={{marginLeft: 20, fontSize: 15}}/></Text></Button>
+ <Button transparent onPress={this._signOut.bind(this)}><Text style={{fontSize: 17}}>Sign Out <Icon name="log-out" style={{marginLeft: 20, fontSize: 17}}/></Text></Button>
           </Right>
+         
         </Header>
-        <Content style={{flex:1}}>
-        <Content style={{flex: 2, marginBottom: 20, marginTop: 10}}>
-        <Appointments userInfo={this.state.userInfo} />
-        </Content>
-        <Content style={{flex: 1}}>
-        <Button full style={{flex: 2}} onPress={this._addAppt.bind(this)}><Text>Add Appointment</Text></Button>
-        <Button full><Text>Add Appointment</Text></Button>
-          </Content>
-        </Content>
+        <Container style={{flex: 3, marginBottom: 20, marginTop: 10}}>
+           <ListView
+          dataSource={this.state.appointments}
+          renderRow={(appointment) => 
+              <Card>
+                <CardItem>
+                    <Left>
+                        <Body>
+                          <Text style={{fontWeight: '700'}}>{moment(appointment.appTime).format('dddd, MMMM Do YYYY @ h:mm a')}</Text>
+                          <Text>{this.state.userInfo.providers.map((provider, index) => {
+                            if (provider._id === appointment.provider) {
+                              return provider.name
+                            }
+                          })
+                          
+                        }</Text>
+                          <Text>{appointment.notes}</Text>
+                        </Body>
+                    </Left>
+                  </CardItem>
+            </Card>   
+        }/>
+        </Container>
         <Footer style={styles.footer}>
+          <FooterTab>
+            <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('ApptHome')}>
+              <Icon name='md-calendar'/>
+              <Text>Appointments</Text>
+            </Button>      
         
-        <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={this._signOut.bind(this)}><Icon name='md-calendar'/><Text>Appointments</Text></Button>      
-        <Button  style={{flex: 1, flexDirection: 'column'}} transparent onPress={this._signOut.bind(this)}><Icon name='ios-medical'/><Text>Providers</Text></Button>        
-        <Button  style={{flex: 1, flexDirection: 'column'}} transparent onPress={this._signOut.bind(this)}><Icon name='md-body'/><Text>User Info</Text></Button> 
+            <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('Providers')}>
+              <Icon name='ios-medical'/>
+              <Text>Providers</Text>
+            </Button>        
+            
+            <Button style={{flex: 1, flexDirection: 'column'}} transparent onPress={() => this._navigate('UserProfile')}>
+              <Icon name='md-body'/>
+              <Text>User Info</Text>
+            </Button> 
+          </FooterTab>
         </Footer>
       </Container>
     )

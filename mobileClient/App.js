@@ -78,11 +78,6 @@ async componentWillMount() {
 }
 
 
-
- _navigate = (route) => {
-    this.refs.navigator.push(route);
-    this.refs.drawer.close();
-}
   // PUT SOMETHING IN HERE TO ROUTE NAVIGATOR TO DASHBOARD IF LOGGED IN 
 
   render () {
